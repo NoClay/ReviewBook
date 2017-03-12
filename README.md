@@ -6,5 +6,11 @@
 
 在GitHub上目录文件为SUMMARY.md，打开即可使用目录索引。
 
+# 帮助
 
+gitbook使用
+
+> gitbook build --gitbook=2.6.7
+
+可以生成可跳转的html页面
 
