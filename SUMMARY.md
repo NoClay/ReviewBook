@@ -19,4 +19,6 @@
     * [如何做远程服务的权限验证？](ipcji-zhi/shi-yong-aidl/ru-he-zuo-yuan-cheng-fu-wu-de-quan-xian-yan-zheng-ff1f.md)
 * [Binder](binder.md)
 * [ListView的优化](listviewde-you-hua.md)
+* [View事件分发](viewshi-jian-fen-fa.md)
+* [View工作原理](viewgong-zuo-yuan-li.md)
 
