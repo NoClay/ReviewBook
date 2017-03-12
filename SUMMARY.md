@@ -34,6 +34,9 @@
 * [抽象类和接口](javabu-fen/chou-xiang-lei-he-jie-kou.md)
 * [线程的实现方式](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
+* [XML解析](javabu-fen/xmljie-xi.md)
+* 集合
+  * [ArrayList，Vector，LinkedList的对比](javabu-fen/arraylistvectorlinkedlistde-dui-bi.md)
 
 ## 操作系统
 
@@ -42,4 +45,12 @@
 ## 设计模式
 
 * [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
+
+## 计算机网络
+
+* [forward和redirect的区别](ji-suan-ji-wang-luo/forwardhe-redirect-de-qu-bie.md)
+
+## 算法
+
+* [排序算法](suan-fa/pai-xu-suan-fa.md)
 
