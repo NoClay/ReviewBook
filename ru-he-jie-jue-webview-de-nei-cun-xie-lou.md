@@ -19,11 +19,12 @@
    ```
        <style name="ActivityTheme" parent="AppTheme">
            <item name="android:windowBackground">@color/white</item>
-         	<!--设置窗口透明-->
+             <!--设置窗口透明-->
            <item name="android:windowIsTranslucent">true</item>
        </style>
    ```
 
-  
+# 测试用的标题
+
 
 
