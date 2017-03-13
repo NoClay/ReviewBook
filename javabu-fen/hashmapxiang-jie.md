@@ -6,158 +6,57 @@
 
 HashMap是基于哈希表的Map接口的一种实现，相对应的还有TreeMap,LinkedHashMap等实现方式，此实现提供了所有可选的映射操作，并且允许Key，和value为null值，此类不能保证映射的顺序，即某一键值对序列在顺如不同的情况下添加到Map集合中，可能出现不同的存储顺序，同时HashMap不会保证该顺序恒久不变。
 
-# HashMap内部的常量
+# 简介
 
-```java
- /**
-     * The default initial capacity - MUST be a power of two.
-     * 默认的初始容量为4，必须是2的次方
-     */
-    static final int DEFAULT_INITIAL_CAPACITY = 4;
+基于哈希表的 Map 接口的实现。此实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。
 
-    /**
-     * The maximum capacity, used if a higher value is implicitly specified
-     * by either of the constructors with arguments.
-     * 最大的容量，如果指定的容量大于这个值，则将容量设置为最大容量，后边的构造方法有体现。
-     * MUST be a power of two <= 1<<30.
-     */
-    static final int MAXIMUM_CAPACITY = 1 << 30;
+此实现假定哈希函数将元素适当地分布在各桶之间，可为基本操作（get 和 put）提供稳定的性能。迭代 collection 视图所需的时间与 HashMap 实例的“容量”（桶的数量）及其大小（键-值映射关系数）成比例。所以，如果迭代性能很重要，则不要将初始容量设置得太高（或将加载因子设置得太低）。
 
-    /**
-     * The load factor used when none specified in constructor.
-     * 默认的装载因子，如果没有指定装载因子，则使用默认的装载因子
-     */
-    static final float DEFAULT_LOAD_FACTOR = 0.75f;
-    /** 
- * 当一个桶中存储的节点数    增加到 
- * 大于8个，则将链表转换为红黑树结构存储。 
- */  
-static final int TREEIFY_THRESHOLD = 8;  
-  
-/** 
- * 当一个桶中的存储的节点数   减少到 
- * 小于6个，则将红黑树转换为链表结构存储 
- */  
-static final int UNTREEIFY_THRESHOLD = 6;  
-  
-/** 
- * 最小的树化容量，即当HashMap的容量至少为64的时候 
- * 才能进行链表转化为红黑树的操作，这样做是为了解决 
- * 树化阀值和容量扩容之间的冲突，即当HashMap第一次扩容 
- * 即扩展到64，，，16----->64->128->256，如此 
- */  
-static final int MIN_TREEIFY_CAPACITY = 64;  
-```
+HashMap 的实例有两个参数影响其性能：**初始容量 和加载因子**。容量 是哈希表中桶的数量，初始容量只是哈希表在创建时的容量。加载因子 是哈希表在其容量自动增加之前可以达到多满的一种尺度。当哈希表中的条目数超出了加载因子与当前容量的乘积时，则要对该哈希表进行 rehash 操作（即重建内部数据结构），从而哈希表将具有大约两倍的桶数。
 
-# HashMap中几个重要的变量
+通常，**默认加载因子 \(.75\) 在时间和空间成本上寻求一种折衷**。加载因子过高虽然减少了空间开销，但同时也增加了查询成本（在大多数 HashMap 类的操作中，包括 get 和 put 操作，都反映了这一点）。在设置初始容量时应该考虑到映射中所需的条目数及其加载因子，以便最大限度地减少 rehash 操作次数。如果初始容量大于最大条目数除以加载因子，则不会发生 rehash 操作。
 
-```java
-    /**
-     * An empty table instance to share when the table is not inflated.
-     * 当table没有加载完毕的时候用来share的一个空的table
-     */
-    static final HashMapEntry<?,?>[] EMPTY_TABLE = {};
+如果很多映射关系要存储在 HashMap 实例中，则相对于按需执行自动的 rehash 操作以增大表的容量来说，使用足够大的初始容量创建它将使得映射关系能更有效地存储。
 
-    /**
-     * The table, resized as necessary. Length MUST Always be a power of two.
-     * 用来存储的table，当需要重新调整大小的时候自动调整，长度必须是2的次方
-     */
-    transient HashMapEntry<K,V>[] table = (HashMapEntry<K,V>[]) EMPTY_TABLE;
+**注意，此实现不是同步的。**如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须 保持外部同步。（结构上的修改是指添加或删除一个或多个映射关系的任何操作；仅改变与实例已经包含的键关联的值不是结构上的修改。）这一般通过对自然封装该映射的对象进行同步操作来完成。**如果不存在这样的对象，则应该使用 **[**`Collections.synchronizedMap`**](../../java/util/Collections.html#synchronizedMap%28java.util.Map%29)** 方法来“包装”该映射。最好在创建时完成这一操作，以防止对映射进行意外的非同步访问，如下所示：   Map m = Collections.synchronizedMap\(new HashMap\(...\)\);**
 
-    /**
-     * The number of key-value mappings contained in this map.
-     * 用来记录HashMap中已经存在的key的个数
-     */
-    transient int size;
+**由所有此类的“collection 视图方法”所返回的迭代器都是快速失败 的**：在迭代器创建之后，如果从结构上对映射进行修改，除非通过迭代器本身的 remove 方法，其他任何时间任何方式的修改，迭代器都将抛出 [`ConcurrentModificationException`](../../java/util/ConcurrentModificationException.html)。因此，面对并发的修改，迭代器很快就会完全失败，而不冒在将来不确定的时间发生任意不确定行为的风险。
 
-    /**
-     * The next size value at which to resize (capacity * load factor).
-     * 阀值，当size达到这个值的时候进行扩容， 阀值 = 容量 * 装载因子
-     * @serial
-     */
-    // If table == EMPTY_TABLE then this is the initial capacity at which the
-    // table will be created when inflated.
-    int threshold;
+注意，迭代器的快速失败行为不能得到保证，一般来说，存在非同步的并发修改时，不可能作出任何坚决的保证。快速失败迭代器尽最大努力抛出 ConcurrentModificationException。因此，编写依赖于此异常的程序的做法是错误的，正确做法是：迭代器的快速失败行为应该仅用于检测程序错误。
 
-    /**
-     * The load factor for the hash table.
-     * 哈希表的装载因子
-     * @serial
-     */
-    // Android-Note: We always use a load factor of 0.75 and ignore any explicitly
-    // selected values.
-    final float loadFactor = DEFAULT_LOAD_FACTOR;
+# 构造方法
 
-    /**
-     * The number of times this HashMap has been structurally modified
-     * Structural modifications are those that change the number of mappings in
-     * the HashMap or otherwise modify its internal structure (e.g.,
-     * rehash).  This field is used to make iterators on Collection-views of
-     * the HashMap fail-fast.  (See ConcurrentModificationException).
-     * 此HashMap已被结构修改的次数
-     */
-    transient int modCount;
-    
-```
+| 构造方法 | 方法作用 |
+| :--- | :--- |
+| HashMap\(\) | 构造具有默认容量（16）和默认装载因子0.75的空HashMap |
+| HashMap\(int initialCapacity\) | 构造具有指定容量和默认装载因子 |
+| HashMap\(int initialCapacity, float loadFactor\) | 构造具有指定容量和指定装载因子 |
+| HashMap\(Map&lt;? extends K, ? extends V&gt; m\) | 构造一个映射关系和指定Map相同的 |
 
-# HashMap的构造方法
+# 其他方法
 
-```java
-    public HashMap(int initialCapacity, float loadFactor) {
-        if (initialCapacity < 0)
-            throw new IllegalArgumentException("Illegal initial capacity: " +
-                                               initialCapacity);
-        if (initialCapacity > MAXIMUM_CAPACITY) {
-            initialCapacity = MAXIMUM_CAPACITY;
-        } else if (initialCapacity < DEFAULT_INITIAL_CAPACITY) {
-            initialCapacity = DEFAULT_INITIAL_CAPACITY;
-        }
-
-        if (loadFactor <= 0 || Float.isNaN(loadFactor))
-            throw new IllegalArgumentException("Illegal load factor: " +
-                                               loadFactor);
-        // Android-Note: We always use the default load factor of 0.75f.
-
-        // This might appear wrong but it's just awkward design. We always call
-        // inflateTable() when table == EMPTY_TABLE. That method will take "threshold"
-        // to mean "capacity" and then replace it with the real threshold (i.e, multiplied with
-        // the load factor).
-        threshold = initialCapacity;
-        init();
-    }
-```
-
-**注意：**
-
-1. 这里验证了我们之前的想法，当我们制定的容量大于最大容量或者小于最小值，会等于默认值
-2. 我们初始化哈希表的时候，会将阈值设置为初始容量，在创建哈希表的时候会将阈值设定为真正的值（容量 \* 装载因子）
-3. 这里的table并没有初始化，也就是没有申请空间，只是确定了参数而已。
-
-# HashMap的put过程
-
-两个put方法
-
-```java
-    public V put(K key, V value) {
-        return putVal(hash(key), key, value, false, true);
-    }
-    @Override
-    public V putIfAbsent(K key, V value) {
-        return putVal(hash(key), key, value, true, true);
-    }
-    final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
-                   boolean evict) {
-                   //put
-    }
-```
-
-putVal参数列表依次为：
-
-1. key经过处理的hash值，具体处理过程不做简述
-2. key的对象
-3. value的对象
-4. 如果为true, 不改变已经存在的值
-5. 如果是false，表处于创建模式
+| 返回值 | 方法名 | 作用 |
+| :--- | :--- | :--- |
+| clear\(\) | clear\(\) | 移除所有的映射关系 |
+| Object | clone\(\) | 返回实例的浅表本身，并不复制键和值本身 |
+| boolean | containsKey\(Object Key\) | 如果包含对于指定key的映射，返回true |
+| boolean | containsValue\(Object value\) | 如果包含关于value的映射，返回true |
+| Set&lt;K, V&gt; | entrySet\(\) | 返回键值对Set |
+| Set&lt;K&gt; | keySet\(\) | 返回key的Set集合 |
+| V | get\(Object key\) | 返回指定键映射的值，无则null |
+| boolean | isEmpty\(\) | 实例中是否有键值对映射 |
+| V | put\(K key, V value\) | 指定键值对映射 |
+| void | putAll\(Map&lt;? extends K, ? extends V&gt; m\) | 复制指定键值对映射到实例 |
+| V | remove\(Object key\) | 删除指定键的映射关系 |
+| int | size\(\) | 返回映射关系数 |
+| Collection&lt;V&gt; | values\(\) | 返回映射的值的Collection视图 |
+| V | putIfAbsent\(K key, V value\) | 如果存在指定映射，不修改 |
+| V | compute\(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remppingFunction\) | 尝试计算指定键及其当前映射值的映射（如果没有当前映射则为null） |
+| V | computeIfAbsent\(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remppingFunction\) | 如果指定键尚未建立映射（或映射到null），则尝试使用给定的映射函数计算其值，然后输入到此映射中，除非为null |
+| V | computeIfPresent\(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remppingFunction\) | 如果指定键的值存在且非空，则尝试计算给定键和当前映射值的新映射 |
+| void | forEach\(BiConsumer&lt;? super K, ? super V&gt; action） | 对此映射中的每个条目执行给定的操作，直到所有条目都已处理或操作抛出异常 |
+| V | merge\(K key, V value, BiFunction&lt;? super V, ? super V, ? super V&gt; remppingFunction\) | 如果指定的键尚未与值关联或与空值相关联，则将其与给定的非空值相关联 |
+| V | getOrDefault\(K key, V defaultValue\) | 返回指定键映射到的值，如果此映射不包含键的映射，则返回defaultValue |
 
 
 
