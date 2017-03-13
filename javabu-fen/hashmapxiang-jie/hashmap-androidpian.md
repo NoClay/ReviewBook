@@ -3,7 +3,7 @@
 ```java
 /**
      * The default initial capacity - MUST be a power of two.
-     * 默认的初始容量为4，必须是2的次方
+     * 默认的初始容量，必须是2的次方
      */
     static final int DEFAULT_INITIAL_CAPACITY = 4;
 
@@ -58,7 +58,6 @@
      * 此HashMap已被结构修改的次数
      */
     transient int modCount;
-    
 ```
 
 ---
@@ -234,7 +233,4 @@ public V put(K key, V value) {
 **碰撞**：好的Hash算法可以出计算几乎出独一无二的HashCode，如果出现了重复的hashCode，就称作碰撞;
 
 就算是MD5这样优秀的算法也会发生碰撞，即两个不同的key也有可能生成相同的MD5。这里的算法就应该是非常优秀的算法，以至于很少产生碰撞。
-
-  
-
 

@@ -1,4 +1,4 @@
-# HashMap的继承关系（ps：java的jdk中的HashMap和Android中的略有不同，此处以Android中的为例）
+# HashMap的继承关系
 
 > HashMap&lt;K, V&gt; extends AbstractMap&lt;K, V&gt; implements Map&lt;K, V&gt;, Cloneable, serializable
 >
@@ -18,7 +18,7 @@ HashMap 的实例有两个参数影响其性能：**初始容量 和加载因子
 
 如果很多映射关系要存储在 HashMap 实例中，则相对于按需执行自动的 rehash 操作以增大表的容量来说，使用足够大的初始容量创建它将使得映射关系能更有效地存储。
 
-**注意，此实现不是同步的。**如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须 保持外部同步。（结构上的修改是指添加或删除一个或多个映射关系的任何操作；仅改变与实例已经包含的键关联的值不是结构上的修改。）这一般通过对自然封装该映射的对象进行同步操作来完成。**如果不存在这样的对象，则应该使用 **[**`Collections.synchronizedMap`**](../../java/util/Collections.html#synchronizedMap%28java.util.Map%29)** 方法来“包装”该映射。最好在创建时完成这一操作，以防止对映射进行意外的非同步访问，如下所示：   Map m = Collections.synchronizedMap\(new HashMap\(...\)\);**
+**注意，此实现不是同步的。**如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须 保持外部同步。（结构上的修改是指添加或删除一个或多个映射关系的任何操作；仅改变与实例已经包含的键关联的值不是结构上的修改。）这一般通过对自然封装该映射的对象进行同步操作来完成。**如果不存在这样的对象，则应该使用 **[`Collections.synchronizedMap`](../../java/util/Collections.html#synchronizedMap%28java.util.Map%29)** 方法来“包装”该映射。最好在创建时完成这一操作，以防止对映射进行意外的非同步访问，如下所示：   Map m = Collections.synchronizedMap\(new HashMap\(...\)\);**
 
 **由所有此类的“collection 视图方法”所返回的迭代器都是快速失败 的**：在迭代器创建之后，如果从结构上对映射进行修改，除非通过迭代器本身的 remove 方法，其他任何时间任何方式的修改，迭代器都将抛出 [`ConcurrentModificationException`](../../java/util/ConcurrentModificationException.html)。因此，面对并发的修改，迭代器很快就会完全失败，而不冒在将来不确定的时间发生任意不确定行为的风险。
 

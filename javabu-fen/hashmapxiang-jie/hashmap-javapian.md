@@ -5,7 +5,7 @@
 ```java
  /**
      * The default initial capacity - MUST be a power of two.
-     * 默认的初始容量为4，必须是2的次方
+     * 默认的初始容量，必须是2的次方
      */
     static final int DEFAULT_INITIAL_CAPACITY = 4;
 
