@@ -1,8 +1,8 @@
 # 
 
-##  排序算法对比
+## 排序算法对比
 
-![](file:///C:/Users/no_clay/AppData/Local/Temp/ksohtml/wps660A.tmp.png?lastModify=1489327175)
+![](http://blog.chinaunix.net/attachment/201201/18/21457204_1326898064RUxx.jpg)
 
 ### 1. 插入排序
 
