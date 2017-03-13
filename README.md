@@ -14,3 +14,13 @@ gitbook使用
 
 可以生成可跳转的html页面
 
+gitbook生成pdf文件
+
+请在管理员命令行下尝试
+
+> gitbook pdf .\[/directory\]
+
+
+
+
+
