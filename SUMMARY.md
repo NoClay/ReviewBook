@@ -35,8 +35,9 @@
 * [线程的实现方式](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
 * [XML解析](javabu-fen/xmljie-xi.md)
-* 集合
+* [集合](javabu-fen/ji-he.md)
   * [ArrayList，Vector，LinkedList的对比](javabu-fen/arraylistvectorlinkedlistde-dui-bi.md)
+  * [HashMap详解](javabu-fen/hashmapxiang-jie.md)
 
 ## 操作系统
 
