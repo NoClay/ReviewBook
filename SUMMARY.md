@@ -38,6 +38,8 @@
 * [集合](javabu-fen/ji-he.md)
   * [ArrayList，Vector，LinkedList的对比](javabu-fen/arraylistvectorlinkedlistde-dui-bi.md)
   * [HashMap详解](javabu-fen/hashmapxiang-jie.md)
+    * HashMap--Android篇
+    * [HashMap--Java篇](javabu-fen/hashmapxiang-jie/hashmap-javapian.md)
 
 ## 操作系统
 
