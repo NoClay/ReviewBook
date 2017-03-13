@@ -1,4 +1,4 @@
-# HashMap中的常量
+# HashMap中的常量（Android篇）
 
 ```java
 /**

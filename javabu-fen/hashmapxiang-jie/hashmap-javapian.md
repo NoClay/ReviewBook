@@ -1,4 +1,4 @@
-# HashMap内部的常量
+# HashMap内部的常量（Java篇）
 
 与Android比较共同拥有的：
 
