@@ -22,7 +22,6 @@
      * 默认的装载因子，如果没有指定装载因子，则使用默认的装载因子
      */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
- 
 ```
 
 Android中HashMap中没有的：
