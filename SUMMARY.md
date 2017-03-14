@@ -7,7 +7,7 @@
 ## Android部分
 
 * [零碎知识点](ling-sui-zhi-shi-dian.md)
-* Activity的生命周期和启动模式
+* [Activity的生命周期和启动模式](Activity的生命周期和启动模式.md)
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
