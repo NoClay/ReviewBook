@@ -62,5 +62,7 @@
   * [归并排序](suan-fa/pai-xu-suan-fa/gui-bing-pai-xu.md)
   * [快速排序](suan-fa/pai-xu-suan-fa/kuai-su-pai-xu.md)
   * [计数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
-  * [基数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
+  * [基数排序](suan-fa/pai-xu-suan-fa/ji_shu_pai_xu01.md)
+  * [木桶排序](suan-fa/pai-xu-suan-fa/mu-tong-pai-xu.md)
+  * [堆排序](suan-fa/pai-xu-suan-fa/dui-pai-xu.md)
 
