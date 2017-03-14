@@ -7,7 +7,7 @@
 ## Android部分
 
 * [零碎知识点](ling-sui-zhi-shi-dian.md)
-* [Activity的生命周期和启动模式](Activity的生命周期和启动模式.md)
+* [Activity的生命周期和启动模式](activity-de-sheng-ming-zhou-qi.md)
 * [Fragment的生命周期](fragmentde-sheng-ming-zhou-qi.md)
 * [Service的生命周期](servicede-sheng-ming-zhou-qi.md)
 * [Broadcast](broadcast.md)
@@ -53,7 +53,7 @@
 * [线程部分](javabu-fen/xian-cheng-bu-fen.md)
   * [线程的实现](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
   * [线程的同步](javabu-fen/duo-xian-cheng-tong-bu.md)
-  * [线程池](线程池.md)
+  * [线程池](threadpool.md)
 
 ## 操作系统
 
@@ -82,5 +82,5 @@
 
 ## 数据结构
 
-* [数据结构各种树](数据结构之各种树.md)
+* [数据结构各种树](all-tree-in-structure.md)
 
