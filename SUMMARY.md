@@ -65,7 +65,7 @@
 
 ## 计算机网络
 
-* [forward和redirect的区别](ji-suan-ji-wang-luo/forwardhe-redirect-de-qu-bie.md)
+* [网络基础知识](ji-suan-ji-wang-luo/forwardhe-redirect-de-qu-bie.md)
 
 ## 算法
 
