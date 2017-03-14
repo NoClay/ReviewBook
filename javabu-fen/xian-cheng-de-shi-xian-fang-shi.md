@@ -18,27 +18,17 @@ class TaskWithResult implements Callable<T> {
     public T call() throws Exception {  
         return new T();  
     }  
-  	public static void main(String[] args) throws 		 InterruptedException,ExecutionException {  
+      public static void main(String[] args) throws          InterruptedException,ExecutionException {  
         ExecutorService exec = Executors.newCachedThreadPool();  
         Future<T> result = exec.submit(new TaskWithResult());   
-      	//Future 相当于是用来存放Executor执行的结果的一种容器,可以利用result.isDone()判断任务完成否
+          //Future 相当于是用来存放Executor执行的结果的一种容器,可以利用result.isDone()判断任务完成否
         TaskWithResult data = result.get();
         exec.shutdown();  
     }  
-} 
+}
 ```
 
-**同步方法：**
 
-1. wait\(\)：使一个线程处于等待状态，并释放所持有的对象的lock
-
-2. sleep\(\)：使一个正在运行的线程处于睡眠状态，是一个静态方法，调用此方法要捕获InterruptedException异常
-
-3. notify\(\)：唤醒一个处于等待状态的线程，这里的唤醒由jvm决定调度，且与优先级无关。
-
-4. Allnotify\(\)：唤醒所有处于等待状态的线程。
-
-5. synchronized：利用对象的监视器属性加同步锁。
 
 
 

@@ -33,6 +33,7 @@
 * [垃圾回收机制](javabu-fen/la-ji-hui-shou-ji-zhi.md)
 * [抽象类和接口](javabu-fen/chou-xiang-lei-he-jie-kou.md)
 * [线程的实现方式](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
+* [多线程同步](javabu-fen/duo-xian-cheng-tong-bu.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
 * [XML解析](javabu-fen/xmljie-xi.md)
 * [集合](javabu-fen/ji-he.md)
@@ -40,6 +41,10 @@
   * [HashMap详解](javabu-fen/hashmapxiang-jie.md)
     * [HashMap--Java篇](javabu-fen/hashmapxiang-jie/hashmap-javapian.md)
     * [HashMap--Android篇](javabu-fen/hashmapxiang-jie/hashmap-androidpian.md)
+* [类加载机制](javabu-fen/lei-jia-zai-ji-zhi.md)
+  * [装载（load）](javabu-fen/lei-jia-zai-ji-zhi/zhuang-zai-ff08-load.md)
+  * [链接（link）](javabu-fen/lei-jia-zai-ji-zhi/lian-jie-ff08-link.md)
+  * [初始化](javabu-fen/lei-jia-zai-ji-zhi/chu-shi-hua.md)
 
 ## 操作系统
 

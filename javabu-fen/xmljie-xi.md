@@ -13,3 +13,11 @@ XPath 是一门在 XML 文档中查找信息的语言， 可用来在 XML 文档
 
 用到了数据存储，信息配置两方面，在做数据交换平台的时候，将数据组装成xml文件，然后将xml文件压缩加密后通过网络传送给接收者，接收解密与解压缩后再次xml文件中还原相关信息进行处理，在做软件配置时，利用xml可以很放百年的进行，软件的各种配置都可以存储在xml文件中，比如SharedPrefences。
 
+# XML文档定义有几种形式？它们之间有何本质区别？解析XML文档有哪几种方式？
+
+有两种定义形式，dtd文档类型定义和SchemaXML模式；XML Schema 和DTD都用于文档验证，但二者还有一定的区别，本质区别是：Scheme本身是xml的，可以被XML解析器解析，这也是从DTD上发展Schema的根本目的。另外，XML Schema 是内容开放模型，可扩展，功能性强，而DTD可扩展性差。XML Schema 支持丰富的数据类型，而 DTD不支持元素的数据类型，对属性的类型定义也很有限。XML Schema 支持命名空间机制，而DTD不支持。XML Schema 可针对不同情况对整个XML 文档或文档局部进行验证；而 DTD缺乏这种灵活性。XML Schema 完全遵循XML规范，符合XML语法，可以和DOM结合使用，功能强大；而DTD 语法本身有自身的语法和要求，难以学习。
+
+有DOM文档对象模型，SAX（Simple API for XML）,STAX等。DOM：文档驱动，处理大行文件时，其性能下降的非常厉害，这个问题是由DOM的树结构所造成的，这种结构占用的内存较多，而且DOM必须在解析文件之前把整个文档装入内存，适合对XML的随机访问。SAX:不同于DOM，SAX是事件驱动型的XML解析方式。他顺序读取XML文件，不需要一次全部装在整个文件，当遇到像文件开头，文档结束，或者标签开头与标签结束时，他会触发一个事件，用户通过在其回调事件中写入处理代码来处理XML文件，适合对XML的顺序访问，且是只读的。当前浏览器不支持SAXSAXParserFactory factory = SAXParserFactory.newinstance\(\);SAXParser saxparser = factory.newSAXParser\(\); //创建SAX解析器MyHandler handler = new MyHandler\(\); //创建事件处理器saxParser.parse\(new File\("Sax\_1.xml"\),handler\); //绑定文件和事件处理者
+
+STAX:Streaming API for XML ,是用“JavaTM”语言处理XML的最新标准，STAX与其他方法的区别就在于应用程序能够把XML作为一个文件流来处理。STAX允许应用程序把代码这些事件逐个拉出来，而不用提供在解析器方便时从解析器中接受事件的处理程序。
+
