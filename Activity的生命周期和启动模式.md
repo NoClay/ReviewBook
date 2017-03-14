@@ -103,6 +103,36 @@ Activity按照优先级从高到低，可以分为以下三种：
 
 当我们配置了这个以后，这个activity就不会重新创建，取而代之的是调用Activity.onConfigurationChanged方法
 
+### 1.5 缓存方法
+
+1. **onSaveInstanceState**\(Bundle outState\)
+
+   * onSaveInstanceState方法被调用的情况有 :
+
+     * 当用户按下HOME键时。
+
+     * 长按HOME键，选择运行其他的程序时。
+
+     * 按下电源按键（关闭屏幕显示）时。
+
+     * 从Activity A中启动一个新的Activity时。
+
+     * 屏幕方向切换时，例如从竖屏切换到横屏时。（如果不指定configchange属性）
+
+2. **onRestoreInstanceState**\(Bundle outState\)
+
+   * onRestoreInstanceState方法需要注意的是 :
+
+     * onSaveInstanceState方法和onRestoreInstanceState方法“不一定”是成对的被调用的。
+
+     * onRestoreInstanceState的bundle参数也会传递到onCreate方法中，你也可以选择在onCreate方法中做数据还原。
+
+     * onRestoreInstanceState在onstart之后执行。
+
+   * onRestoreInstanceState方法被调用的前提是 :
+
+     * Activity A“确实”被系统销毁了，例如，当正在显示Activity A的时候，用户按下HOME键回到主界面，然后用户紧接着又返回到Activity A，这种情况下Activity A一般不会因为内存的原因被系统销毁，故Activity A的onRestoreInstanceState方法不会被执行。
+
 ## 2 Activity的启动模式
 
 ### 2.1 Activity的LaunchMode
@@ -194,6 +224,7 @@ data由两部分组成，mimeType和URI，mimeType指的是媒体类型，而URI
   注意：
 
 * 如果在过滤规则中没有设定URI，默认值为content和file
+
 * 使用Intent设置数据的时候推荐使用setDataAndType，否则的话setData和setType会互相抹除对方设置
 
 ### 注意
