@@ -48,7 +48,7 @@
 
 ## 操作系统
 
-* [线程调度](cao-zuo-xi-tong/xian-cheng-diao-du.md)
+* [线程与进程](cao-zuo-xi-tong/xian-cheng-diao-du.md)
 
 ## 设计模式
 

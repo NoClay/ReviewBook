@@ -10,6 +10,22 @@
 
 5. synchronized：利用对象的监视器属性加同步锁。
 
+# **Synchronized**
+
+Synchronized是Java中解决并发问题的一种最常用的方法，也是最简单的一种方法。Synchronized的作用主要有三个：（1）确保线程互斥的访问同步代码（2）保证共享变量的修改能够及时可见（3）有效解决重排序问题。从语法上讲，Synchronized总共有三种用法：
+
+　　（1）修饰普通方法
+
+　　（2）修饰静态方法
+
+　　（3）修饰代码块
+
+原理：执行monitorexit的线程必须是objectref所对应的monitor的所有者。
+
+指令执行时，monitor的进入数减1，如果减1后进入数为0，那线程退出monitor，不再是这个monitor的所有者。其他被这个monitor阻塞的线程可以尝试去获取这个monitor的所有权。
+
+　　通过这两段描述，我们应该能很清楚的看出Synchronized的实现原理，Synchronized的语义底层是通过一个monitor的对象来完成，其实wait/notify等方法也依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常的原因。
+
 # Synchronized和Lock的区别？
 
 同步的实现当然是采用锁了，java中使用锁的两个基本工具是 synchronized 和 Lock。
@@ -126,6 +142,4 @@ ReentrantLock 与synchronized有相同的并发性和内存语义，还包含了
 使用建议：
 
 在并发量比较小的情况下，使用synchronized是个不错的选择，但是在并发量比较高的情况下，其性能下降很严重，此时ReentrantLock是个不错的方案。
-
-
 
