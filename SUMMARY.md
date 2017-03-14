@@ -34,8 +34,6 @@
 * [Java基础知识](javabu-fen/final-finally-finalizede-qu-bie.md)
 * [垃圾回收机制](javabu-fen/la-ji-hui-shou-ji-zhi.md)
 * [抽象类和接口](javabu-fen/chou-xiang-lei-he-jie-kou.md)
-* [线程的实现方式](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
-* [多线程同步](javabu-fen/duo-xian-cheng-tong-bu.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
 * [XML解析](javabu-fen/xmljie-xi.md)
 * [集合](javabu-fen/ji-he.md)
@@ -47,6 +45,10 @@
   * [装载（load）](javabu-fen/lei-jia-zai-ji-zhi/zhuang-zai-ff08-load.md)
   * [链接（link）](javabu-fen/lei-jia-zai-ji-zhi/lian-jie-ff08-link.md)
   * [初始化](javabu-fen/lei-jia-zai-ji-zhi/chu-shi-hua.md)
+* [线程部分](javabu-fen/xian-cheng-bu-fen.md)
+  * [线程的实现](javabu-fen/xian-cheng-de-shi-xian-fang-shi.md)
+  * [线程的同步](javabu-fen/duo-xian-cheng-tong-bu.md)
+  * [线程池](线程池.md)
 
 ## 操作系统
 
@@ -72,4 +74,8 @@
   * [计数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
   * [基数排序](suan-fa/pai-xu-suan-fa/ji_shu_pai_xu01.md)
   * [木桶排序](suan-fa/pai-xu-suan-fa/mu-tong-pai-xu.md)
+
+## 数据结构
+
+* [数据结构各种树](数据结构之各种树.md)
 
