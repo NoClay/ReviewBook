@@ -26,6 +26,7 @@
   * [View的事件分发](viewshi-jian-fen-fa/viewde-shi-jian-fen-fa.md)
   * [View的滑动冲突](viewshi-jian-fen-fa/viewde-hua-dong-chong-tu.md)
 * [View工作原理](viewgong-zuo-yuan-li.md)
+* [AsyncTask详解](/asynctask_xiang_jie.md)
 
 ## Java部分
 
