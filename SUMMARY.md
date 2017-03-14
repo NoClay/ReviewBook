@@ -7,9 +7,11 @@
 ## Android部分
 
 * [零碎知识点](ling-sui-zhi-shi-dian.md)
+* Activity的生命周期和启动模式
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
+  * [Binder](binder.md)
   * [序列化](ipcji-zhi/xu-lie-hua.md)
   * [使用Bundle](ipcji-zhi/shi-yong-bundle.md)
   * [使用文件](ipcji-zhi/shi-yong-wen-jian.md)
@@ -19,7 +21,6 @@
     * [使用Listener遇到的小问题](ipcji-zhi/shi-yong-aidl/shi-yong-listener-yu-dao-de-xiao-wen-ti.md)
     * [解决Binder的意外死亡](ipcji-zhi/shi-yong-aidl/jie-juebinder-de-yi-wai-si-wang.md)
     * [如何做远程服务的权限验证？](ipcji-zhi/shi-yong-aidl/ru-he-zuo-yuan-cheng-fu-wu-de-quan-xian-yan-zheng-ff1f.md)
-* [Binder](binder.md)
 * [ListView的优化](listviewde-you-hua.md)
 * [View事件分发](viewshi-jian-fen-fa.md)
   * [View的滑动](viewshi-jian-fen-fa/viewde-ji-chu-zhi-shi.md)
