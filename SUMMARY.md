@@ -56,4 +56,11 @@
 ## 算法
 
 * [排序算法](suan-fa/pai-xu-suan-fa.md)
+  * [插入排序](suan-fa/pai-xu-suan-fa/cha-ru-pai-xu.md)
+  * [冒泡排序](suan-fa/pai-xu-suan-fa/mao-pao-pai-xu.md)
+  * [选择排序](suan-fa/pai-xu-suan-fa/xuan-ze-pai-xu.md)
+  * [归并排序](suan-fa/pai-xu-suan-fa/gui-bing-pai-xu.md)
+  * [快速排序](suan-fa/pai-xu-suan-fa/kuai-su-pai-xu.md)
+  * [计数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
+  * [基数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
 
