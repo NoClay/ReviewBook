@@ -13,7 +13,7 @@
 * onDestory：表示Activity即将销毁，这是生命周期中最后一个回调，可以在这里做一些回收工作和最后的资源释放。
 
 正常情况下Activity生命周期图如下：  
-![](/timg.jpg)
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1488616947&di=3d5f24c1feba35962ab60fe29aec5129&src=http://www.oschina.net/uploads/space/2011/1117/210131_1I26_195301.png)
 
 需要注意的是：  
 1. 针对一个特定的Activity，第一次启动，回调：onCreate-&gt;onStart-&gt;onResume  
