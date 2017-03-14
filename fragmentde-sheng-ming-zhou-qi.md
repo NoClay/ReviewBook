@@ -1,4 +1,4 @@
-### 生命周期
+### Fragment的生命周期
 
 1. **onAttach\(\)**: Fragment和Activity建立关联的时候调用。
 

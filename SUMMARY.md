@@ -9,6 +9,8 @@
 * [零碎知识点](ling-sui-zhi-shi-dian.md)
 * [Activity的生命周期和启动模式](Activity的生命周期和启动模式.md)
 * [Fragment的生命周期](fragmentde-sheng-ming-zhou-qi.md)
+* [Service的生命周期](servicede-sheng-ming-zhou-qi.md)
+* [Broadcast](broadcast.md)
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
@@ -29,7 +31,7 @@
   * [View的事件分发](viewshi-jian-fen-fa/viewde-shi-jian-fen-fa.md)
   * [View的滑动冲突](viewshi-jian-fen-fa/viewde-hua-dong-chong-tu.md)
 * [View工作原理](viewgong-zuo-yuan-li.md)
-* [AsyncTask详解](/asynctask_xiang_jie.md)
+* Broadcast
 
 ## Java部分
 
