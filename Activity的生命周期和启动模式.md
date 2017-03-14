@@ -13,7 +13,7 @@
 * onDestory：表示Activity即将销毁，这是生命周期中最后一个回调，可以在这里做一些回收工作和最后的资源释放。
 
 正常情况下Activity生命周期图如下：  
-![Activity声明周期图](https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1487521029&di=c975d78d19a4375801be867e54162ccf&src=http://img.mukewang.com/54447abe00015df010000530.jpg)
+![](https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1488616947&di=3d5f24c1feba35962ab60fe29aec5129&src=http://www.oschina.net/uploads/space/2011/1117/210131_1I26_195301.png)
 
 需要注意的是：  
 1. 针对一个特定的Activity，第一次启动，回调：onCreate-&gt;onStart-&gt;onResume  
@@ -42,6 +42,51 @@ Activity按照优先级从高到低，可以分为以下三种：
 （1） 前台Activity--正在和用户进行交互的Activity，优先级最高  
 （2） 可见但非前台Activity--比如Activity弹出了一个对话框，导致Activity可见但是位于后台无法交互  
 （3） 后台Activity--已经被暂停的Activity，比如执行了onStop，优先级最低
+
+### 1.3 常见生命周期的变化
+
+**启动Activity**:
+
+1. * `onCreate()—>onStart()—>onResume()`，Activity进入运行状态。
+2. **Activity退居后台**:
+
+   * 原Activity 转到 新Activity 或 按Home键回到主屏 :`onPause()—>onStop()`，Activity进入停滞状态。
+
+3. **Activity返回前台**:
+
+   * `onRestart()—>onStart()—>onResume()`，Activity再次回到运行状态。
+
+4. **Activity退居后台，且系统内存不足，系统会杀死这个后台状态的Activity，若再次回到这个Activity**:
+
+   * `onCreate()–>onStart()—>onResume()`\(将重新走一次Activity的初始化生命周期\)
+
+5. **锁屏**:
+
+   * `onPause()->onStop()`
+
+6. **解锁**:
+
+   * `onStart()->onResume()`
+
+7. **切屏**:
+
+   * 不设置Activity的`android:configChanges`时，切屏会重新走一次初始化生命周期，切横屏时会执行一次，切竖屏时会执行两次，设置Activity的`android:configChanges="orientation"`时，切屏还是会重新走一次初始化生命周期，切横、竖屏时只会执行一次，设置Activity的`android:configChanges="orientation|keyboardHidden"`时，切屏不会重新走一次初始化生命周期，只会执行onConfigurationChanged方法
+
+   * **横屏**:
+
+     * `onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
+
+   * **竖屏**:
+
+     * `onSaveInstanceState()->onPause()->onStop-()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()->onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
+
+8. **Activity失去焦点**:
+
+   * `onPause()`
+
+9. **Activity不可见**:
+
+   * `onStop()`
 
 ### 如何让Activity在系统配置改变的时候不销毁重建？
 
@@ -133,8 +178,9 @@ data由两部分组成，mimeType和URI，mimeType指的是媒体类型，而URI
 * scheme：URI的模式，比如http，file，content，URI必须指定scheme。
 * host：主机名，URI必须指定主机名
 * port：端口号，仅当scheme和host指定后有意义
-* path、pathPrefix、pathPattern：路径信息，path为完整的路径，pathPattern为完整的路径信息，但是可以包含通配符“\*”，pathPrefix表示路径的前缀信息。
+* path、pathPrefix、pathPattern：路径信息，path为完整的路径，pathPattern为完整的路径信息，但是可以包含通配符“\*”，pathPrefix表示路径的前缀信息。  
   如下两种特殊的写法，作用是一样的：
+
   ```xml
     <intent-filter ....>
        <data android:scheme="file" android:host="www.baidu.com"/>
@@ -146,6 +192,7 @@ data由两部分组成，mimeType和URI，mimeType指的是媒体类型，而URI
   ```
 
   注意：
+
 * 如果在过滤规则中没有设定URI，默认值为content和file
 * 使用Intent设置数据的时候推荐使用setDataAndType，否则的话setData和setType会互相抹除对方设置
 
