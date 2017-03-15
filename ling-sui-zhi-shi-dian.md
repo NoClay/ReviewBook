@@ -168,7 +168,7 @@
 
   5. 结果队列 : 用于存储请求执行后返回的结果
 
-![](http://image85.360doc.com/DownloadImg/2015/05/1114/53423907_1.jpeg)
+![](/thread.jpeg)
 
 * AsycTask、HandlerThread、IntentService使用场景
 
