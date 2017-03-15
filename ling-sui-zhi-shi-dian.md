@@ -181,12 +181,13 @@
   2. **HandlerThread继承自Thread**
 
      * 这是一种可以使用 Handler 的 Thread，在 run 方法中通过 Looper.prepare\(\) 来创建消息队列，并通过 Looper.loop\(\) 来开启消息循环。
+     * 用来托管主线程的Handler，**利用异步线程的方式来处理主线程的UI，减轻主线程的负担**，我们会经常用Handler在子线程中更新UI线程，而HandlerThread新建拥有Looper的子线程又有什么用呢？**必然是执行耗时操作。**举个例子，在轮播图中，我们每5秒需要切换一下显示的图片，如果我们将这种长时间的反复调用操作放到UI线程中，虽说可以执行，但是这样的操作多了之后，很容易会让UI线程卡顿甚至崩溃。 于是，就必须在子线程中调用这些了。 HandlerThread继承自Thread，一般适应的场景，便是集Thread和Handler之所长，适用于会长时间在后台运行，并且间隔时间内会调用的情况，比如上面所说的轮播图，又比如天气预报定时更新天气等等。
 
   3. **AsyncTask是thread池+Handler的结合产物**
 
      * 可以更方便地更新UI线程，减少程序中线程过多开销过大，操作和管理更加方便
 
-       * execute\(\)在父线程中调用，在onPreExecute\(\)、onProgressUpdate\(Progress…\)、onPostExecute\(Result\)都在父线程中执行，doInBackground\(Params…\)在子线程中执行
+     * execute\(\)在父线程中调用，在onPreExecute\(\)、onProgressUpdate\(Progress…\)、onPostExecute\(Result\)都在父线程中执行，doInBackground\(Params…\)在子线程中执行
 
   4. 总而言之，数据量多且复杂使用**Thread+Handler**，数据简单实现代码简单**AsyncTask**，**IntentService**解决了传统的Service中处理完耗时操作忘记停止并销毁Service的问题
 
