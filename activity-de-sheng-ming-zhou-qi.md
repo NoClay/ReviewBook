@@ -35,9 +35,9 @@
 注意：  
 1. onSaveInstancestate方法调用在onStop之前，但是与onPause没有既定的时序关系
 
-2. 在activity异常发生的时候，Activity会调用onSaveInstanceState来保存数据，然后activity会委托Window去保存数据，然后Window会委托DecorView去保存数据，然后顶层容器一一通知它的子元素进行保存数据。
+1. 在activity异常发生的时候，Activity会调用onSaveInstanceState来保存数据，然后activity会委托Window去保存数据，然后Window会委托DecorView去保存数据，然后顶层容器一一通知它的子元素进行保存数据。
 
-3. 布局中的每一个View默认实现了onSaveInstanceState\(\)方法，这样的话，这个UI的任何改变都会自动地存储和在activity重新创建的时候自动地恢复。**但是这种情况只有在你为这个UI提供了唯一的ID之后才起作用，如果没有提供ID，app将不会存储它的状态。**
+2. 布局中的每一个View默认实现了onSaveInstanceState\(\)方法，这样的话，这个UI的任何改变都会自动地存储和在activity重新创建的时候自动地恢复。**但是这种情况只有在你为这个UI提供了唯一的ID之后才起作用，如果没有提供ID，app将不会存储它的状态。**
 
 ### 2. 情况2：内存不足导致低优先级的Activity被杀死
 
@@ -48,48 +48,51 @@ Activity按照优先级从高到低，可以分为以下三种：
 
 ### 1.3 常见生命周期的变化
 
-**启动Activity**:
 
-1. * `onCreate()—>onStart()—>onResume()`，Activity进入运行状态。
-2. **Activity退居后台**:
 
-   * 原Activity 转到 新Activity 或 按Home键回到主屏 :`onPause()—>onStop()`，Activity进入停滞状态。
+**启动Activity:**
 
-3. **Activity返回前台**:
+> onCreate\(\)—&gt;onStart\(\)—&gt;onResume\(\)\`，Activity进入运行状态
 
-   * `onRestart()—>onStart()—>onResume()`，Activity再次回到运行状态。
+**Activity退居后台**:
 
-4. **Activity退居后台，且系统内存不足，系统会杀死这个后台状态的Activity，若再次回到这个Activity**:
+> 原Activity 转到 新Activity 或 按Home键回到主屏 :`onPause()—>onStop()`，Activity进入停滞状态。
 
-   * `onCreate()–>onStart()—>onResume()`\(将重新走一次Activity的初始化生命周期\)
+**Activity返回前台**:
 
-5. **锁屏**:
+> `onRestart()—>onStart()—>onResume()`，Activity再次回到运行状态。
 
-   * `onPause()->onStop()`
+**Activity退居后台，且系统内存不足，系统会杀死这个后台状态的Activity，若再次回到这个Activity**:
 
-6. **解锁**:
+> `onCreate()–>onStart()—>onResume()`\(将重新走一次Activity的初始化生命周期\)
 
-   * `onStart()->onResume()`
+**锁屏**:
 
-7. **切屏**:
+> `onPause()->onStop()`
 
-   * 不设置Activity的`android:configChanges`时，切屏会重新走一次初始化生命周期，切横屏时会执行一次，切竖屏时会执行两次，设置Activity的`android:configChanges="orientation"`时，切屏还是会重新走一次初始化生命周期，切横、竖屏时只会执行一次，设置Activity的`android:configChanges="orientation|keyboardHidden"`时，切屏不会重新走一次初始化生命周期，只会执行onConfigurationChanged方法
+**解锁**:
 
-   * **横屏**:
+> `onStart()->onResume()`
 
-     * `onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
+**切屏**:
 
-   * **竖屏**:
+> 不设置Activity的`android:configChanges`时，切屏会重新走一次初始化生命周期，切横屏时会执行一次，切竖屏时会执行两次，设置Activity的`android:configChanges="orientation"`时，切屏还是会重新走一次初始化生命周期，切横、竖屏时只会执行一次，设置Activity的`android:configChanges="orientation|keyboardHidden"`时，切屏不会重新走一次初始化生命周期，只会执行onConfigurationChanged方法
 
-     * `onSaveInstanceState()->onPause()->onStop-()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()->onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
+**横屏：**
 
-8. **Activity失去焦点**:
+> onSaveInstanceState\(\)-&gt;onPause\(\)-&gt;onStop\(\)-&gt;onDestroy\(\)-&gt;onCreate\(\)-&gt;onStart\(\)-&gt;onRestoreInstanceState\(\)-&gt;onResume\(\)
 
-   * `onPause()`
+**竖屏:**
 
-9. **Activity不可见**:
+> `onSaveInstanceState()->onPause()->onStop-()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()->onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
 
-   * `onStop()`
+**Activity失去焦点**:
+
+> onPause\(\)\`
+
+**Activity不可见**:
+
+> `onStop()`
 
 ### 如何让Activity在系统配置改变的时候不销毁重建？
 
