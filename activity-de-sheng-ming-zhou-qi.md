@@ -33,8 +33,11 @@
 ![这里写图片描述](http://img.blog.csdn.net/20170220152414073?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjcwMzUxMjM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 注意：  
-1. onSaveInstancestate方法调用在onStop之前，但是与onPause没有既定的时序关系  
+1. onSaveInstancestate方法调用在onStop之前，但是与onPause没有既定的时序关系
+
 2. 在activity异常发生的时候，Activity会调用onSaveInstanceState来保存数据，然后activity会委托Window去保存数据，然后Window会委托DecorView去保存数据，然后顶层容器一一通知它的子元素进行保存数据。
+
+3. 布局中的每一个View默认实现了onSaveInstanceState\(\)方法，这样的话，这个UI的任何改变都会自动地存储和在activity重新创建的时候自动地恢复。**但是这种情况只有在你为这个UI提供了唯一的ID之后才起作用，如果没有提供ID，app将不会存储它的状态。**
 
 ### 2. 情况2：内存不足导致低优先级的Activity被杀死
 
