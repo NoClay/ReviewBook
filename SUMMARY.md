@@ -38,7 +38,7 @@
 
 * [Java基础知识](javabu-fen/final-finally-finalizede-qu-bie.md)
 * [垃圾回收机制](javabu-fen/la-ji-hui-shou-ji-zhi.md)
-  * [对象已死吗？](javabu-fen/la-ji-hui-shou-ji-zhi/dui-xiang-yi-si-ma-ff1f.md)
+  * [对象已死吗？](javabu-fen/la-ji-hui-shou-ji-zhi/dui-xiang-yi-si-ma.md)
 * [抽象类和接口](javabu-fen/chou-xiang-lei-he-jie-kou.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
 * [XML解析](javabu-fen/xmljie-xi.md)
