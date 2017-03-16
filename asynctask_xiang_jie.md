@@ -201,7 +201,7 @@ FutureTask执行Callable任务（类似Thread执行runnable任务），执行完
     }
 ```
 
-`execute`方法调用了`executeOnExecutor`方法。它使用了一个默认的`Executor`对象管理线程的执行顺序。在`executoOnExecutor`方法中，首先对状态进行了处理，非`PENDING`状态执行都会抛出异常，这里可以解释为什么不能执行两次。然后首先调用了`onPreExecute()`方法，然后利用传进来的`Executor`对象执行了`mFuture`任务，并将自己返回。
+`execute`方法调用了`executeOnExecutor`方法。它使用了一个默认的`Executor`对象管理线程的执行顺序。**默认的Executor是一个ServialExecutor，这个用来保证线程的执行顺序，当一个完成后执行另一个。**在`executoOnExecutor`方法中，首先对状态进行了处理，非`PENDING`状态执行都会抛出异常，这里可以解释为什么不能执行两次。然后首先调用了`onPreExecute()`方法，然后利用传进来的`Executor`对象执行了`mFuture`任务，并将自己返回。
 
 ## AsyncTask中的线程池在执行任务时究竟在干什么？
 
