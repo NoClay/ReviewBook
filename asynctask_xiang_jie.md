@@ -99,6 +99,14 @@ AsyncTask是Android中提供的一个异步操作框架， 在Android还有Threa
 2. Android1.6 - Android2.3.2它是在一个线程池当中并发执行的
 3. Android3.0- ～ 它又是在一个后台线程中顺序执行。但是，如果我们想让AsyncTask并发的执行，我们可以使用`executeOnExecutor`方法，为它指定一个`Executor`对象，控制它的执行顺序。
 
+> 可以使用以下两个Executor
+>
+> public static ExecutorService exec = Executors.newFixedThreadPool\(10\);
+>
+> AsyncTask.THREAD\_POOL\_EXECUTOR
+>
+> task.executeOnExecutor\(targetExecutor, params\);
+
 ## AsyncTask曾经的缺陷
 
 AsyncTask在并发执行多个任务时发生异常。其实还是存在的，在3.0以前的系统中还是会以支持多线程并发的方式执行，支持并发数也是我们上面所计算的128，阻塞队列可以存放10个；也就是同时执行138个任务是没有问题的；而超过138会马上出现[Java](http://lib.csdn.net/base/javase).util.concurrent.RejectedExecutionException；
