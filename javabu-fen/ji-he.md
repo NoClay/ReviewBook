@@ -11,7 +11,7 @@
 
 上述类图中，实线边框的是实现类，比如ArrayList，LinkedList，HashMap等，折线边框的是抽象类，比如AbstractCollection，AbstractList，AbstractMap等，而点线边框的是接口，比如Collection，Iterator，List等。
 
-　　所有的集合类，都实现了Iterator接口，这是一个用于遍历集合中元素的接口，主要包含hashNext\(\),next\(\),remove\(\)三种方法。它的一个子接口LinkedIterator在它的基础上又添加了三种方法，分别是add\(\),previous\(\),hasPrevious\(\)。也就是说如果是先Iterator接口，那么在遍历集合中元素的时候，只能往后遍历，被遍历后的元素不会在遍历到，通常无序集合实现的都是这个接口，比如HashSet，HashMap；而那些元素有序的集合，实现的一般都是LinkedIterator接口，实现这个接口的集合可以双向遍历，既可以通过next\(\)访问下一个元素，又可以通过previous\(\)访问前一个元素，比如ArrayList。  
+所有的集合类，都实现了Iterator接口，这是一个用于遍历集合中元素的接口，主要包含hashNext\(\),next\(\),remove\(\)三种方法。它的一个子接口LinkedIterator在它的基础上又添加了三种方法，分别是add\(\),previous\(\),hasPrevious\(\)。也就是说如果是先Iterator接口，那么在遍历集合中元素的时候，只能往后遍历，被遍历后的元素不会在遍历到，通常无序集合实现的都是这个接口，比如HashSet，HashMap；而那些元素有序的集合，实现的一般都是LinkedIterator接口，实现这个接口的集合可以双向遍历，既可以通过next\(\)访问下一个元素，又可以通过previous\(\)访问前一个元素，比如ArrayList。  
 （PS：本段属于转载）  
 **以下为楼主自己总结的集合类的继承关系图（Ps：集合类下方为常用方法）**  
 ![](http://img.blog.csdn.net/20160422214246710 "这里写图片描述")
@@ -24,10 +24,8 @@ Collection接口是层次结构中的根接口，构成Collection的单位为元
 
 两种实现方法：
 
-1.ArrayList  
-以可变数组的方式保存所有的元素，包括null，可以根据索引位置对集合进行快速的随机访问，但是进行插入对象和删除对象的时候速度较慢。  
-2. LinkedList  
-采用链表的结构保存对象，随机访问的时候由于链表的结构实现导致效率较低，但是在插入对象和删除对象的时候效率很高。
+1. ArrayList 以可变数组的方式保存所有的元素，包括null，可以根据索引位置对集合进行快速的随机访问，但是进行插入对象和删除对象的时候速度较慢。
+2. LinkedList 采用链表的结构保存对象，随机访问的时候由于链表的结构实现导致效率较低，但是在插入对象和删除对象的时候效率很高。
 
 # Set集合
 
