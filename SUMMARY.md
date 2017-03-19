@@ -63,6 +63,7 @@
 ## 设计模式
 
 * [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
+* [MVC与MVP](she-ji-mo-shi/mvcyu-mvp.md)
 
 ## 计算机网络
 
