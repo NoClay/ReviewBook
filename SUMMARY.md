@@ -33,6 +33,10 @@
   * [View的滑动冲突](viewshi-jian-fen-fa/viewde-hua-dong-chong-tu.md)
 * [View工作原理](viewgong-zuo-yuan-li.md)
 * [AsyncTask详解](asynctask_xiang_jie.md)
+* [Android的消息机制](androidde-xiao-xi-ji-zhi.md)
+  * [ThreadLocal](androidde-xiao-xi-ji-zhi/threadlocal.md)
+  * [消息队列的工作原理](androidde-xiao-xi-ji-zhi/xiao-xi-dui-lie-de-gong-zuo-yuan-li.md)
+  * Looper的工作原理
 
 ## Java部分
 
