@@ -36,7 +36,8 @@
 * [Android的消息机制](androidde-xiao-xi-ji-zhi.md)
   * [ThreadLocal](androidde-xiao-xi-ji-zhi/threadlocal.md)
   * [消息队列的工作原理](androidde-xiao-xi-ji-zhi/xiao-xi-dui-lie-de-gong-zuo-yuan-li.md)
-  * Looper的工作原理
+  * [Looper的工作原理](androidde-xiao-xi-ji-zhi/looperde-gong-zuo-yuan-li.md)
+  * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 
 ## Java部分
 
