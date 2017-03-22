@@ -7,7 +7,7 @@ HandlerThread就是一个加上了Handler的Thread，它的实现相当简单。
         super(name);
         mPriority = Process.THREAD_PRIORITY_DEFAULT;
     }
-    
+
     /**
      * Constructs a HandlerThread.
      * @param name
