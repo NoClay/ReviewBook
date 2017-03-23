@@ -42,6 +42,7 @@
     * [AsyncTask](asynctask_xiang_jie.md)
     * [HandlerThread](handlerthread.md)
     * [IntentService](intentservice.md)
+  * [Androdi中的线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
 
 ## Java部分
 
