@@ -41,7 +41,7 @@
   * [Android中的线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/androidzhong-de-xian-cheng-xing-tai.md)
     * [AsyncTask](asynctask_xiang_jie.md)
     * [HandlerThread](handlerthread.md)
-    * IntentService
+    * [IntentService](intentservice.md)
 
 ## Java部分
 
