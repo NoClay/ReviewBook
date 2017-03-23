@@ -17,4 +17,4 @@
     }
 ```
 参数解释：
-1. corePoolSize:线程池
+1. corePoolSize:线程池的核心线程数，默认情况下，
