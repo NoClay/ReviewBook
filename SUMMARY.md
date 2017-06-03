@@ -50,6 +50,7 @@
 * [垃圾回收机制](javabu-fen/la-ji-hui-shou-ji-zhi.md)
   * [对象已死吗？](javabu-fen/la-ji-hui-shou-ji-zhi/dui-xiang-yi-si-ma.md)
   * [HotSpot的算法实现](javabu-fen/la-ji-hui-shou-ji-zhi/hotspotde-suan-fa-shi-xian.md)
+  * [内存分配与回收策略](javabu-fen/la-ji-hui-shou-ji-zhi/nei-cun-fen-pei-yu-hui-shou-ce-lve.md)
 * [抽象类和接口](javabu-fen/chou-xiang-lei-he-jie-kou.md)
 * [Servlet（Server与Applet\)](javabu-fen/servlet.md)
 * [XML解析](javabu-fen/xmljie-xi.md)

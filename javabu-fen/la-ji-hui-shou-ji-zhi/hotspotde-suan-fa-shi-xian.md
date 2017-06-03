@@ -35,87 +35,80 @@ HotSpot没有为每条指令都生成OopMap，因为这需要大量的内存空�
 
 Serial收集器是一个新生代收集器，单线程执行，使用复制算法。它在进行垃圾收集时，必须暂停其他所有的工作线程\(用户线程\)。是Jvm client模式下默认的新生代收集器。对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程收集效率。
 
-## ParNew\(并行GC\)收集器
+## 2. ParNew\(并行GC\)收集器
 
 ParNew收集器其实就是serial收集器的多线程版本，除了使用多条线程进行垃圾收集之外，其余行为与Serial收集器一样。在单CPU工作环境内绝对不会有比Serial的收集器有更好的效果，随着可以使用的CPU的数量的增加，它对于GC时系统资源的有效利用还是很有好处的，它默认开启的收集线程数与CPU的数量下同，在CPU非常多的环境下，可以使用-XX：ParallelGCThreads参数来限制垃圾收集的线程数。
 
-## Parallel Scavenge\(并行回收GC\)收集器
+## 3. Parallel Scavenge\(并行回收GC\)收集器
 
 Parallel Scavenge收集器也是一个新生代收集器，它也是使用复制算法的收集器，又是并行多线程收集器。parallel Scavenge收集器的特点是它的关注点与其他收集器不同，CMS等收集器的关注点是尽可能地缩短垃圾收集时用户线程的停顿时间，而parallel Scavenge收集器的目标则是达到一个可控制的吞吐量。吞吐量= 程序运行时间/\(程序运行时间 + 垃圾收集时间\)，虚拟机总共运行了100分钟。其中垃圾收集花掉1分钟，那吞吐量就是99%。Parallel Scavenge提供了两个参数用于精确控制吞吐量，分别是**控制最大垃圾收集停顿时间的-XX：MaxGCPauseMillis参数和直接设置吞吐量大小的-XXGCTimeRatio参数。**
 
 这个收集器还有一个开关：**-XX：+UseAdaptiveSizePolicy**值得关注。这个开关打开后，虚拟机会根据当前系统的运行情况收集性能监控信息自动调整新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX：SurvivorRation）、晋升老年代对象大小（-XX：PretenureSizeThreshold）等细节参数。
 
-## Serial Old\(串行GC\)收集器
+使用自适应策略，只需要设置最大堆（-Xmx）,利用最大停顿时间或者吞吐量给虚拟机设置一个优化目标。
 
-> Serial Old是Serial收集器的老年代版本，它同样使用一个单线程执行收集，使用“标记-整理”算法。主要使用在Client模式下的虚拟机。
+## 4. Serial Old\(串行GC\)收集器
 
-## Parallel Old\(并行GC\)收集器
+Serial Old是Serial收集器的老年代版本，它同样使用一个单线程执行收集，使用“标记-整理”算法。主要使用在Client模式下的虚拟机。对于Server模式下有两个用途：**1. 在JDK1.5以及之前的版本中与Parallel Scavenge收集器搭配使用；2. 作为CMS收集器的后备预案，在并发收集发生Concurrent Mode Failure时使用。**
 
-> Parallel Old是Parallel Scavenge收集器的老年代版本，使用多线程和“标记-整理”算法。
+## 5. Parallel Old\(并行GC\)收集器
 
-## CMS\(并发GC\)收集器
+Parallel Old是Parallel Scavenge收集器的老年代版本，使用多线程和“标记-整理”算法。
 
-> CMS\(Concurrent Mark Sweep\)收集器是一种以获取最短回收停顿时间为目标的收集器。CMS收集器是基于“标记-清除”算法实现的，整个收集过程大致分为4个步骤：
+## 6. CMS\(并发GC\)收集器
 
-> > ①.初始标记\(CMS initial mark\)
->
-> > ②.并发标记\(CMS concurrenr mark\)
->
-> > ③.重新标记\(CMS remark\)
->
-> > ④.并发清除\(CMS concurrent sweep\)
->
-> > 其中初始标记、重新标记这两个步骤任然需要停顿其他用户线程。初始标记仅仅只是标记出GC ROOTS能直接关联到的对象，速度很快，并发标记阶段是进行GC ROOTS 根搜索算法阶段，会判定对象是否存活。而重新标记阶段则是为了修正并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间会被初始标记阶段稍长，但比并发标记阶段要短。
-> >      由于整个过程中耗时最长的并发标记和并发清除过程中，收集器线程都可以与用户线程一起工作，所以整体来说，CMS收集器的内存回收过程是与用户线程一起并发执行的。
-> > CMS收集器的优点：并发收集、低停顿，但是CMS还远远达不到完美，器主要有三个显著缺点：
-> > CMS收集器对CPU资源非常敏感。在并发阶段，虽然不会导致用户线程停顿，但是会占用CPU资源而导致引用程序变慢，总吞吐量下降。CMS默认启动的回收线程数是：\(CPU数量+3\) / 4。
-> > CMS收集器无法处理浮动垃圾，可能出现“Concurrent Mode Failure“，失败后而导致另一次Full  GC的产生。由于CMS并发清理阶段用户线程还在运行，伴随程序的运行自热会有新的垃圾不断产生，这一部分垃圾出现在标记过程之后，CMS无法在本次收集中处理它们，只好留待下一次GC时将其清理掉。这一部分垃圾称为“浮动垃圾”。也是由于在垃圾收集阶段用户线程还需要运行，
-> >  
-> > 即需要预留足够的内存空间给用户线程使用，因此CMS收集器不能像其他收集器那样等到老年代几乎完全被填满了再进行收集，需要预留一部分内存空间提供并发收集时的程序运作使用。在默认设置下，CMS收集器在老年代使用了68%的空间时就会被激活，也可以通过参数-XX:CMSInitiatingOccupancyFraction的值来提供触发百分比，以降低内存回收次数提高性能。要是CMS运行期间预留的内存无法满足程序其他线程需要，就会出现“Concurrent Mode Failure”失败，这时候虚拟机将启动后备预案：临时启用Serial Old收集器来重新进行老年代的垃圾收集，这样停顿时间就很长了。所以说参数-XX:CMSInitiatingOccupancyFraction设置的过高将会很容易导致“Concurrent Mode Failure”失败，性能反而降低。
-> > 最后一个缺点，CMS是基于“标记-清除”算法实现的收集器，使用“标记-清除”算法收集后，会产生大量碎片。空间碎片太多时，将会给对象分配带来很多麻烦，比如说大对象，内存空间找不到连续的空间来分配不得不提前触发一次Full  GC。为了解决这个问题，CMS收集器提供了一个-XX:UseCMSCompactAtFullCollection开关参数，用于在Full  GC之后增加一个碎片整理过程，还可通过-XX:CMSFullGCBeforeCompaction参数设置执行多少次不压缩的Full  GC之后，跟着来一次碎片整理过程。
+CMS\(Concurrent Mark Sweep\)收集器是一种以获取最短回收停顿时间为目标的收集器。CMS收集器是基于“标记-清除”算法实现的，整个收集过程大致分为4个步骤：
 
-## G1收集器
+①.初始标记\(CMS initial mark\)
 
-> G1\(Garbage First\)收集器是JDK1.7提供的一个新收集器，G1收集器基于“标记-整理”算法实现，也就是说不会产生内存碎片。还有一个特点之前的收集器进行收集的范围都是整个新生代或老年代，而G1将整个Java堆\(包括新生代，老年代\)。
+②.并发标记\(CMS concurrenr mark\)
+
+③.重新标记\(CMS remark\)
+
+④.并发清除\(CMS concurrent sweep\)
+
+其中初始标记、重新标记这两个步骤任然需要停顿其他用户线程。初始标记仅仅只是标记出GC ROOTS能直接关联到的对象，速度很快，并发标记阶段是进行GC ROOTS 根搜索算法阶段，会判定对象是否存活。而重新标记阶段则是为了修正并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间会被初始标记阶段稍长，但比并发标记阶段要短。  
+     由于整个过程中耗时最长的并发标记和并发清除过程中，收集器线程都可以与用户线程一起工作，所以整体来说，CMS收集器的内存回收过程是与用户线程一起并发执行的。  
+**CMS收集器的优点：**并发收集、低停顿
+
+**CMS收集器主要有三个显著缺点：**  
+**1. CMS收集器对CPU资源非常敏感**。在并发阶段，虽然不会导致用户线程停顿，但是会占用CPU资源而导致引用程序变慢，总吞吐量下降。CMS默认启动的回收线程数是：\(CPU数量+3\) / 4。虚拟机提供了一种称为“增量式并发收集器”的CMS收集器变种，可以在并发标记、清理的时候让GC线程、用户线程交替运行，尽量减少GC线程的独占资源的时间。  
+**2. CMS收集器无法处理浮动垃圾**，可能出现“Concurrent Mode Failure“，失败后而导致另一次Full  GC的产生。由于CMS并发清理阶段用户线程还在运行，伴随程序的运行自热会有新的垃圾不断产生，这一部分垃圾出现在标记过程之后，CMS无法在本次收集中处理它们，只好留待下一次GC时将其清理掉。这一部分垃圾称为“浮动垃圾”。也是由于在垃圾收集阶段用户线程还需要运行，即需要预留足够的内存空间给用户线程使用，因此CMS收集器不能像其他收集器那样等到老年代几乎完全被填满了再进行收集，需要预留一部分内存空间提供并发收集时的程序运作使用。在默认设置下，CMS收集器在老年代使用了68%的空间时就会被激活，也可以通过参数-XX:CMSInitiatingOccupancyFraction的值来提供触发百分比，以降低内存回收次数提高性能。要是CMS运行期间预留的内存无法满足程序其他线程需要，就会出现“Concurrent Mode Failure”失败，这时候虚拟机将启动后备预案：临时启用Serial Old收集器来重新进行老年代的垃圾收集，这样停顿时间就很长了。所以说参数-XX:CMSInitiatingOccupancyFraction设置的过高将会很容易致“Concurrent Mode Failure”失败，性能反而降低。  
+**3. 碎片化，**最后一个缺点，CMS是基于“标记-清除”算法实现的收集器，使用“标记-清除”算法收集后，会产生大量碎片。空间碎片太多时，将会给对象分配带来很多麻烦，比如说大对象，内存空间找不到连续的空间来分配不得不提前触发一次Full  GC。为了解决这个问题，CMS收集器提供了一个-XX:UseCMSCompactAtFullCollection开关参数，用于在Full  GC之后增加一个碎片整理过程，还可通过-XX:CMSFullGCBeforeCompaction参数设置执行多少次不压缩的Full  GC之后，跟着来一次碎片整理过程。
+
+## 7. G1收集器
+
+G1\(Garbage First\)收集器是JDK1.7提供的一个新收集器，G1收集器基于“标记-整理”算法实现，也就是说不会产生内存碎片。还有一个特点之前的收集器进行收集的范围都是整个新生代或老年代，而G1将整个Java堆\(包括新生代，老年代\)。
+
+**G1收集器的特点：**
+
+1. **并行与并发：**G1利用多CPU、多核环境下的硬件优势，缩小stop-the-world的时间。
+2. **分代收集：**G1不需要其他收集器配合就可以独立管理整个GC堆，但它能够采用不同的方式来处理。
+3. **空间整合：**整体上是“标记-整理”，局部上是基于“复制”的算法来实现的
+4. **可预测的停顿：**降低停顿时间，G1建立了可预测的停顿时间模型，能让使用者明确的指定在一个长度M毫秒内的时间片段，消耗在垃圾收集的时间不得超过N毫秒，这已经适实时java（RTSJ）的垃圾收集器的特征了
+
+**G1收集的步骤：**
+
+1. 初始标记
+2. 并发标记
+3. 最终标记
+4. 筛选回收
+
+# 理解GC日志
+
+GC日志格式：
+
+GC发生的时间 + GC的类型（GC/Full GC） + GC发生的区域（收集器决定的名称） + GC前java堆已使用容量 -&gt; GC后java堆已使用容量（java堆总容量） +　GC所占用的时间（秒）如：\[Times : user = 0.01 sys = 0.00 real = 0.02 secs\] 分别表示用户态消耗的时间，内核态消耗的时间和操作从开始到结束所经过的墙钟时间。
 
 ## 垃圾收集器参数总结
-
-> -XX:+
-> &lt;
-> option
-> &gt;
->  启用选项
-> -XX:-
-> &lt;
-> option
-> &gt;
->  不启用选项
-> -XX:
-> &lt;
-> option
-> &gt;
-> =
-> &lt;
-> number
-> &gt;
-> -XX:
-> &lt;
-> option
-> &gt;
-> =
-> &lt;
-> string
-> &gt;
-
-
 
 | 参数 | 描述 |
 | :--- | :--- |
 | -XX:+UseSerialGC | Jvm运行在Client模式下的默认值，打开此开关后，使用Serial + Serial Old的收集器组合进行内存回收 |
 | -XX:+UseParNewGC | 打开此开关后，使用ParNew + Serial Old的收集器进行垃圾回收 |
-| -XX:+UseConcMarkSweepGC | 使用ParNew + CMS +  Serial Old的收集器组合进行内存回收，Serial Old作为CMS出现“Concurrent Mode Failure”失败后的后备收集器使用。 |
-| -XX:+UseParallelGC | Jvm运行在Server模式下的默认值，打开此开关后，使用Parallel Scavenge +  Serial Old的收集器组合进行回收  |
-| -XX:+UseParallelOldGC | 使用Parallel Scavenge +  Parallel Old的收集器组合进行回收  |
+| -XX:+UseConcMarkSweepGC | 使用ParNew + CMS +  Serial Old的收集器组合进行内存回收，Serial Old作为CMS出现“Concurrent Mode Failure”失败后的后备收集器使用。 |
+| -XX:+UseParallelGC | Jvm运行在Server模式下的默认值，打开此开关后，使用Parallel Scavenge +  Serial Old的收集器组合进行回收 |
+| -XX:+UseParallelOldGC | 使用Parallel Scavenge +  Parallel Old的收集器组合进行回收 |
 | -XX:SurvivorRatio | 新生代中Eden区域与Survivor区域的容量比值，默认为8，代表Eden:Subrvivor = 8:1 |
 | -XX:PretenureSizeThreshold | 直接晋升到老年代对象的大小，设置这个参数后，大于这个参数的对象将直接在老年代分配 |
 | -XX:MaxTenuringThreshold | 晋升到老年代的对象年龄，每次Minor GC之后，年龄就加1，当超过这个参数的值时进入老年代 |
@@ -125,46 +118,30 @@ Parallel Scavenge收集器也是一个新生代收集器，它也是使用复制
 | -XX:GCTimeRatio | GC时间占总时间的比列，默认值为99，即允许1%的GC时间，仅在使用Parallel Scavenge 收集器时有效 |
 | -XX:MaxGCPauseMillis | 设置GC的最大停顿时间，在Parallel Scavenge 收集器下有效 |
 | -XX:CMSInitiatingOccupancyFraction | 设置CMS收集器在老年代空间被使用多少后出发垃圾收集，默认值为68%，仅在CMS收集器时有效，-XX:CMSInitiatingOccupancyFraction=70 |
-| -XX:+UseCMSCompactAtFullCollection  | 由于CMS收集器会产生碎片，此参数设置在垃圾收集器后是否需要一次内存碎片整理过程，仅在CMS收集器时有效 |
-| -XX:+CMSFullGCBeforeCompaction  | 设置CMS收集器在进行若干次垃圾收集后再进行一次内存碎片整理过程，通常与UseCMSCompactAtFullCollection参数一起使用 |
-| -XX:+UseFastAccessorMethods  | 原始类型优化 |
-| -XX:+DisableExplicitGC  | 是否关闭手动System.gc |
-| -XX:+CMSParallelRemarkEnabled  | 降低标记停顿 |
-| -XX:LargePageSizeInBytes  | 内存页的大小不可设置过大，会影响Perm的大小，-XX:LargePageSizeInBytes=128m |
-
-  
-
-
-
+| -XX:+UseCMSCompactAtFullCollection | 由于CMS收集器会产生碎片，此参数设置在垃圾收集器后是否需要一次内存碎片整理过程，仅在CMS收集器时有效 |
+| -XX:+CMSFullGCBeforeCompaction | 设置CMS收集器在进行若干次垃圾收集后再进行一次内存碎片整理过程，通常与UseCMSCompactAtFullCollection参数一起使用 |
+| -XX:+UseFastAccessorMethods | 原始类型优化 |
+| -XX:+DisableExplicitGC | 是否关闭手动System.gc |
+| -XX:+CMSParallelRemarkEnabled | 降低标记停顿 |
+| -XX:LargePageSizeInBytes | 内存页的大小不可设置过大，会影响Perm的大小，-XX:LargePageSizeInBytes=128m |
 
 Client、Server模式默认GC
 
-
-
 | 新生代GC方式 | 老年代和持久 | **代** | GC方式 |
 | :--- | :--- | :--- | :--- |
-|  | Client | Serial 串行GC | Serial Old 串行GC |
-|  | Server | Parallel Scavenge  并行回收GC | Parallel Old 并行GC |
-
-  
-
-
-
+|  | Client | Serial 串行GC | Serial Old 串行GC |
+|  | Server | Parallel Scavenge  并行回收GC | Parallel Old 并行GC |
 
 Sun/[Oracle](http://lib.csdn.net/base/oracle)JDK GC组合方式
 
-
-
 | 新生代GC方式 | 老年代和持久 | **代** | GC方式 |
 | :--- | :--- | :--- | :--- |
-|  | -XX:+UseSerialGC | Serial 串行GC | Serial Old 串行GC |
-|  | -XX:+UseParallelGC | Parallel Scavenge  并行回收GC | Serial Old  并行GC |
-|  | -XX:+UseConcMarkSweepGC | ParNew 并行GC | CMS 并发GC  当出现“Concurrent Mode Failure”时 采用Serial Old 串行GC |
-|  | -XX:+UseParNewGC | ParNew 并行GC | Serial Old 串行GC |
-|  | -XX:+UseParallelOldGC | Parallel Scavenge  并行回收GC | Parallel Old 并行GC |
-|  | -XX:+UseConcMarkSweepGC -XX:+UseParNewGC  | Serial 串行GC | CMS 并发GC  当出现“Concurrent Mode Failure”时 采用Serial Old 串行GC  |
-
-
+|  | -XX:+UseSerialGC | Serial 串行GC | Serial Old 串行GC |
+|  | -XX:+UseParallelGC | Parallel Scavenge  并行回收GC | Serial Old  并行GC |
+|  | -XX:+UseConcMarkSweepGC | ParNew 并行GC | CMS 并发GC  当出现“Concurrent Mode Failure”时 采用Serial Old 串行GC |
+|  | -XX:+UseParNewGC | ParNew 并行GC | Serial Old 串行GC |
+|  | -XX:+UseParallelOldGC | Parallel Scavenge  并行回收GC | Parallel Old 并行GC |
+|  | -XX:+UseConcMarkSweepGC -XX:+UseParNewGC | Serial 串行GC | CMS 并发GC  当出现“Concurrent Mode Failure”时 采用Serial Old 串行GC |
 
 
 
