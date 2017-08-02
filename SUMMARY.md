@@ -43,7 +43,7 @@
     * [HandlerThread](handlerthread.md)
     * [IntentService](intentservice.md)
   * [Androdi中的线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
-* [RemoteView的使用](remoteviewde-shi-yong.md)
+* [RemoteView的使用](RemoteView.md)
 
 ## Java部分
 
