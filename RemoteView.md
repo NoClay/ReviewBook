@@ -1,6 +1,6 @@
 # 版权说明
 
-文章原载于：[天意博文](http://www.haotianyi.win/2017/04/07/view/RemoteViews%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A/)
+文章原载于：[天意博文](http://www.haotianyi.win/2017/04/07/view/RemoteViews详细解释/)
 
 本文在此基础上进行了部分修改。
 
@@ -12,7 +12,7 @@ Android widget 也称为桌面插件，其是android系统应用开发层面的�
 
 ## AppWidgetFramework
 
- Android系统增加了AppWidget 框架，用以支持widget类型应用的开发。AppWidget 框架主要由两个部件来组成：
+Android系统增加了AppWidget 框架，用以支持widget类型应用的开发。AppWidget 框架主要由两个部件来组成：
 
 （1）AppWidgetService是框架的的核心类，是系统 service之一，它负责widgets的管理工作。加载，删除，定时事件等都需要AppWidgetService的处理。开机自启动的。
 
@@ -22,23 +22,21 @@ Android widget 也称为桌面插件，其是android系统应用开发层面的�
 
 ## 工作流程
 
-![绘制流程201704071445](http://oaxelf1sk.bkt.clouddn.com/%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B201704071445.png)
+![绘制流程201704071445](http://oaxelf1sk.bkt.clouddn.com/绘制流程201704071445.png)
 
 1. **编写一个widget（先不考虑后台服务以及用户管理界面等）**
 
    实际是写一个事件监听类即一个BroadcastReceiver子类，当然框架已经提供了一个辅助类AppWidgetProvider，实现的类只要实现其方法即可，其中必须实现的方法是onUpdate ，其实就是一个定时事件，widget监听此事件 另外就是规划好视图（layout），将此widget打包安装。
 
-
-2. **当android系统启动时，AppWidgetService 就将负责检查所有的安装包**
+1. **当android系统启动时，AppWidgetService 就将负责检查所有的安装包**
 
    将检查AndroidManifest.xml（不要告诉我不知道，如果不知道可要看看基本开发知识了）文件中有`<metadata android:name="android.appwidget.provider" android:resource="@xml/appwidget_info" />` 信息的程序包记录下来
 
-
-3. **从用户菜单将已经安装的widget添加到桌面 也就是将widget在桌面上显示出来**
+1. **从用户菜单将已经安装的widget添加到桌面 也就是将widget在桌面上显示出来**
 
    这个是由AppWidgetService和AppWidgetManager完成的，其中AppWidgetManager 将负责将视图发送到桌面显示出来，并将此widget记录到系统文件中
 
-4. **AppWidgetService将根据widget配置中的updatePeriodMillis属性来定时发送ACTION_APPWIDGET_UPDATE事件**
+2. **AppWidgetService将根据widget配置中的updatePeriodMillis属性来定时发送ACTION\_APPWIDGET\_UPDATE事件**
 
    此事件将激活widget的事件监听方法onUpdate，此方法将通过AppWidgetManager完成widget内容的更新和其他操作。
 
@@ -58,13 +56,13 @@ AppWidgetProvider是AppWidget提供者需要实现的接口，它实际上是一
 
 RemoteViews表示的是一个view结构，它可以在**其他进程中显示**。由于它在其他进程中显示，为了能够更新它的界面，RemoteViews提供了一组基础的操作用于跨进程更新它的界面。
 
-RemoteViews主要用于**通知栏通知和桌面小部件**的开发，通知栏通知是通过`NotificationManager`的`notify`方法来实现的；桌面小部件是通过`AppWidgetProvider`来实现的，它本质上是一个广播(BroadcastReceiver)。这两者的界面都是运行在`SystemServer`进程中（跨进程）
+RemoteViews主要用于**通知栏通知和桌面小部件**的开发，通知栏通知是通过`NotificationManager`的`notify`方法来实现的；桌面小部件是通过`AppWidgetProvider`来实现的，它本质上是一个广播\(BroadcastReceiver\)。这两者的界面都是运行在`SystemServer`进程中（跨进程）
 
 **RemoteViews并不是一个真正的View，它没有实现View的接口，而只是一个用于描述View的实体。**比如：创建View需要的资源ID和各个控件的事件响应方法。RemoteViews会通过进程间通信机制传递给AppWidgetHost。
 
 现在我们可以看出，Android中的AppWidget与google widget和中移动的widget并不是一个概念，这里的AppWidget只是把一个进程的控件嵌入到别外一个进程的窗口里的一种方法。View在另 外一个进程里显示，但事件的处理方法还是在原来的进程里。
 
-![snipaste_20170407_114428](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-1c2-1.png)
+![snipaste\_20170407\_114428](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-1c2-1.png)
 
 # RemoteViews应用
 
@@ -121,15 +119,15 @@ RemoteViews主要用于**通知栏通知和桌面小部件**的开发，通知�
 
 显示如下图所示的通知栏：
 
-![snipaste_20170407_100103](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-5109-2.png)
+![snipaste\_20170407\_100103](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-5109-2.png)
 
 并且点击图片的时候会跳转到Main2Activity：
 
-![snipaste_20170407_100141](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-IA-3.png)
+![snipaste\_20170407\_100141](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-IA-3.png)
 
 给对应的布局View设置点击事件：
 
-> remoteViews.setOnClickPendingIntent(R.id.iv,pendingIntent1)
+> remoteViews.setOnClickPendingIntent\(R.id.iv,pendingIntent1\)
 
 单击通知时的响应事件：
 
@@ -139,17 +137,17 @@ RemoteViews主要用于**通知栏通知和桌面小部件**的开发，通知�
 
 新建桌面小部件，在as中创建十分简单，在布局中新建widget，下一步即可：
 
-![snipaste_20170407_101710](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-4551-4.png)
+![snipaste\_20170407\_101710](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-4551-4.png)
 
-创建完成之后会创建如下几个文件：![snipaste_20170407_101919](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-6239-5.png)
+创建完成之后会创建如下几个文件：![snipaste\_20170407\_101919](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-6239-5.png)
 
-home_widget.xml是小部件的布局文件，home_widget_info.xml是小部件的配置文件，Home_Widget.java是小部件的逻辑控制文件
+home\_widget.xml是小部件的布局文件，home\_widget\_info.xml是小部件的配置文件，Home\_Widget.java是小部件的逻辑控制文件
 
-![snipaste_20170407_102124](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-2U3-6.png)
+![snipaste\_20170407\_102124](http://www.jcodecraeer.com/uploads/userup/12809/1F41GG453-2U3-6.png)
 
 小部件的本质是一个BroadcastReceiver，所以还要在mainifest.xml中注册
 
-home_widget.xml具体实现，都是自动生成，和普通的布局没有区别
+home\_widget.xml具体实现，都是自动生成，和普通的布局没有区别
 
 ```
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -175,7 +173,7 @@ home_widget.xml具体实现，都是自动生成，和普通的布局没有区�
 </RelativeLayout>
 ```
 
-home_widget_info.xml具体实现，是小部件的配置文件，指定了布局，大小更新时间等
+home\_widget\_info.xml具体实现，是小部件的配置文件，指定了布局，大小更新时间等
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -278,7 +276,7 @@ public class Home_Widget extends AppWidgetProvider {
 }
 ```
 
-实现逻辑，首先第一次添加的时候会执行onReceive方法，在方法中设置了点击监听，当发生点击事件的时候，由于自定义了action，所以含有特定action的broadcastReceiver会启动，在当前案例中也就是Home_Widget在一次启动，同时又执行了onReceive，更新视图，同时设置事件监听。
+实现逻辑，首先第一次添加的时候会执行onReceive方法，在方法中设置了点击监听，当发生点击事件的时候，由于自定义了action，所以含有特定action的broadcastReceiver会启动，在当前案例中也就是Home\_Widget在一次启动，同时又执行了onReceive，更新视图，同时设置事件监听。
 
 ### 小部件的生命周期
 
@@ -296,7 +294,7 @@ public class Home_Widget extends AppWidgetProvider {
 
 `PendingIntent`表示一种处于Pending状态的Intent，pending表示的是即将发生的意思，它是在将来的某个不确定的时刻放生，而Intent是立刻发生。
 
-PendingIntent支持三种待定意图：启动Activity(getActivity)，启动Service(getService)，发送广播(getBroadcast)。
+PendingIntent支持三种待定意图：启动Activity\(getActivity\)，启动Service\(getService\)，发送广播\(getBroadcast\)。
 
 ## 匹配规则
 
@@ -318,7 +316,7 @@ PendingIntent支持三种待定意图：启动Activity(getActivity)，启动Serv
 
 RemoteView没有findViewById方法，因此无法访问里面的View元素，而必须通过RemoteViews所提供的一系列set方法来完成，这是通过反射调用的
 
-通知栏和小组件分别由NotificationManager(NM)和AppWidgetManager(AWM)管理，而NM和AWM通过Binder分别和SystemService进程中的NotificationManagerService以及AppWidgetService中加载的，而它们运行在系统的SystemService中，这就和我们进程构成了跨进程通讯。
+通知栏和小组件分别由NotificationManager\(NM\)和AppWidgetManager\(AWM\)管理，而NM和AWM通过Binder分别和SystemService进程中的NotificationManagerService以及AppWidgetService中加载的，而它们运行在系统的SystemService中，这就和我们进程构成了跨进程通讯。
 
 ## 构造方法
 
@@ -417,7 +415,7 @@ apply会加载布局并更新界面，而reApply则只会更新界面。通知�
 
 继续跟进，好多代码：
 
-![img](file:///C:/UsersSIMAXI~1AppDataLocalLowBaiduBAIDUP~1AccountCOMMON~1CUSTOM~1RECOMM~1%EF%BF%BDC1CC9~1.JPG)
+![img](file:///C:/UsersSIMAXI~1AppDataLocalLowBaiduBAIDUP~1AccountCOMMON~1CUSTOM~1RECOMM~1�C1CC9~1.JPG)
 
 ```
    protected void applyRemoteViews(RemoteViews remoteViews) {
@@ -718,7 +716,6 @@ apply会加载布局并更新界面，而reApply则只会更新界面。通知�
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-
 ```
 
 ## 配置文件info.xml
@@ -759,7 +756,6 @@ apply会加载布局并更新界面，而reApply则只会更新界面。通知�
 ## AppWidgetList
 
 ```java
-
 public class AppWidgetMedicineList extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -803,14 +799,11 @@ public class AppWidgetMedicineList extends AppWidgetProvider {
         super.onReceive(context, intent);
     }
 }
-
-
 ```
 
 ## UpdateServices
 
 ```java
-
 public class UpdateService extends RemoteViewsService {
     private static final String TAG = "UpdateService";
 
@@ -916,7 +909,6 @@ public class UpdateService extends RemoteViewsService {
         }
     }
 }
-
 ```
 
 ## 最后实现的结果
@@ -928,4 +920,6 @@ public class UpdateService extends RemoteViewsService {
 ## 1. 不要在xml文件中写入不支持的View，注意View本身是不被支持的，所以想要实现分割线，不如尝试用ImageView
 
 ## 2. 不要使用诸如`android:layout_height="?attr/actionBarSize"`这样的属性值，不然你的RemoteView会莫名其妙显示不出来，可能是因为？对于RemoteView是一个耗时操作吧
+
+
 
