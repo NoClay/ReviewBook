@@ -76,6 +76,7 @@
 
 * [面向对象六大原则](she-ji-mo-shi/mian-xiang-dui-xiang-liu-da-yuan-ze.md)
 * [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
+* [Builder模式](she-ji-mo-shi/buildermo-shi.md)
 * [MVC与MVP](she-ji-mo-shi/mvcyu-mvp.md)
 
 ## 计算机网络

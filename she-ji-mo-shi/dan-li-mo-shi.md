@@ -1,4 +1,6 @@
-### 懒汉模式
+# 单例模式
+
+## 懒汉模式
 
 ```
 public class Singleton {
@@ -27,7 +29,7 @@ public class Singleton {
 
 2. 第二个判空是为了防止多个线程竞争创建实例，重复创建实例。
 
-### 饿汉模式
+## 饿汉模式
 
 ```
 public class Singleton{
@@ -66,25 +68,25 @@ public class Singleton{
 ```java
 public class Singleton {
 
-	/**
-	 * 对保存实例的变量添加volitile的修饰
-	 */
-	private volatile static Singleton instance = null;
-	private Singleton(){
-		
-	}
-	
-	public static Singleton getInstance(){
-		//先检查实例是否存在，如果不存在才进入下面的同步块
-		if(instance == null){
-			//同步块，线程安全的创建实例
-			synchronized (Singleton.class) {
-				instance = new Singleton();
-			}
-		}
-		return instance;
-	}
-	
+    /**
+     * 对保存实例的变量添加volitile的修饰
+     */
+    private volatile static Singleton instance = null;
+    private Singleton(){
+
+    }
+
+    public static Singleton getInstance(){
+        //先检查实例是否存在，如果不存在才进入下面的同步块
+        if(instance == null){
+            //同步块，线程安全的创建实例
+            synchronized (Singleton.class) {
+                instance = new Singleton();
+            }
+        }
+        return instance;
+    }
+
 }
 ```
 
@@ -95,17 +97,17 @@ public class Singleton {
 ```java
 public class Singleton {
 
-	/**
-	 * 定义一个枚举的元素，它就代表了Singleton的一个实例
-	 */
-	uniqueInstance;
-	
-	/**
-	 * 示意方法，单例可以有自己的操作
-	 */
-	public void singletonOperation(){
-		//功能树立
-	}
+    /**
+     * 定义一个枚举的元素，它就代表了Singleton的一个实例
+     */
+    uniqueInstance;
+
+    /**
+     * 示意方法，单例可以有自己的操作
+     */
+    public void singletonOperation(){
+        //功能树立
+    }
 }
 ```
 
