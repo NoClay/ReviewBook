@@ -132,3 +132,175 @@ FutureTask执行Callable任务（类似Thread执行runnable任务），执行完
 
 我们直接从AsyncTask的execute\(Params... params\)方法说起，在这个方法里会调用executeOnExecutor\(\)方法，在这个方法中会先检查当前任务的状态是否是Pending，如果不是Pending状态，就会抛出异常，这也就意味着，一个任务不能被多次执行，如果是Pending，就将当前任务的状态变为Running状态，然后在onPreExecute\(\)方法中执行一些任务的初始化操作，之后将执行时传入的参数赋值给Callable的对象mWorker，这里的Callable对象和FutureTask对象是在创建AsyncTask时初始化的，然后调用默认执行器的execute\(\)方法，执行器在执行任务时，会先将任务加入到任务队列的队尾，然后判断mActive是否为空，第一次运行时是null，接下来就会执行scheduleNext\(\)方法，从任务队列的头部取出一个事件在线程池中执行并且将该任务在消息队列中删除，直到消息队列为空时，执行结束，在执行时，会先调用doInBackground\(\)方法，并将任务结果，通过postResult\(\)方法，借助Handler，将结果发送到UI线程中，然后执行任务的finish\(\)方法，在finish方法中根据任务是否已经被取消，决定回调onCancelled还是onPostExecute\(\)，执行完回调方法后，将该任务的状态置为Finished。
 
+```
+/**
+```
+
+```java
+     * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
+     */
+    public AsyncTask() {
+        mWorker = new WorkerRunnable<Params, Result>() {
+            public Result call() throws Exception {
+                mTaskInvoked.set(true);
+
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                //noinspection unchecked
+                Result result = doInBackground(mParams);
+                Binder.flushPendingCommands();
+                return postResult(result);
+            }
+        };
+
+        mFuture = new FutureTask<Result>(mWorker) {
+            @Override
+            protected void done() {
+                try {
+                    postResultIfNotInvoked(get());
+                } catch (InterruptedException e) {
+                    android.util.Log.w(LOG_TAG, e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException("An error occurred while executing doInBackground()",
+                            e.getCause());
+                } catch (CancellationException e) {
+                    postResultIfNotInvoked(null);
+                }
+            }
+        };
+    }
+```
+
+在AsyncTask的构造方法，完成了Callable对象和FutureTask对象的初始化
+
+```java
+@MainThread
+    public final AsyncTask<Params, Progress, Result> execute(Params... params) {
+        return executeOnExecutor(sDefaultExecutor, params);
+    }
+
+    @MainThread
+    public final AsyncTask<Params, Progress, Result> executeOnExecutor(Executor exec,
+            Params... params) {
+        if (mStatus != Status.PENDING) {
+            switch (mStatus) {
+                case RUNNING:
+                    throw new IllegalStateException("Cannot execute task:"
+                            + " the task is already running.");
+                case FINISHED:
+                    throw new IllegalStateException("Cannot execute task:"
+                            + " the task has already been executed "
+                            + "(a task can be executed only once)");
+            }
+        }
+
+        mStatus = Status.RUNNING;
+
+        onPreExecute();
+
+        mWorker.mParams = params;
+        exec.execute(mFuture);
+
+        return this;
+    }
+```
+
+`execute`方法调用了`executeOnExecutor`方法。它使用了一个默认的`Executor`对象管理线程的执行顺序。**默认的Executor是一个ServialExecutor，这个用来保证线程的执行顺序，当一个完成后执行另一个。**在`executoOnExecutor`方法中，首先对状态进行了处理，非`PENDING`状态执行都会抛出异常，这里可以解释为什么不能执行两次。然后首先调用了`onPreExecute()`方法，然后利用传进来的`Executor`对象执行了`mFuture`任务，并将自己返回。
+
+## AsyncTask中的线程池在执行任务时究竟在干什么？
+
+```java
+private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;  
+public static final Executor SERIAL_EXECUTOR = new SerialExecutor();  
+private static class SerialExecutor implements Executor {  
+        final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();  
+        Runnable mActive;  
+        public synchronized void execute(final Runnable r) {  
+            mTasks.offer(new Runnable() {  
+                public void run() {  
+                    try {  
+                        r.run();  
+                    } finally {  
+                        scheduleNext();  
+                    }  
+                }  
+            });  
+            if (mActive == null) {  
+                scheduleNext();  
+            }  
+        }  
+        protected synchronized void scheduleNext() {  
+            if ((mActive = mTasks.poll()) != null) {  
+                THREAD_POOL_EXECUTOR.execute(mActive);  
+            }  
+        }  
+}
+```
+
+可以看到sDefaultExecutor其实为SerialExecutor的一个实例，其内部维持一个任务队列；直接看其execute（Runnable runnable）方法，将runnable放入mTasks队尾；  
+16-17行：判断当前mActive是否为空，为空则调用scheduleNext方法  
+20行：scheduleNext，则直接取出任务队列中的队首任务，如果不为null则传入THREAD\_POOL\_EXECUTOR进行执行。  
+下面看THREAD\_POOL\_EXECUTOR为何方神圣：
+
+```java
+public static final Executor THREAD_POOL_EXECUTOR  
+          =new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,  
+                    TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
+```
+
+可以看到就是一个自己设置参数的线程池，参数为：
+
+```java
+private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    // We want at least 2 threads and at most 4 threads in the core pool,
+    // preferring to have 1 less than the CPU count to avoid saturating
+    // the CPU with background work
+    private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));
+    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+    private static final int KEEP_ALIVE_SECONDS = 30;
+/**
+     * An {@link Executor} that can be used to execute tasks in parallel.
+     */
+    public static final Executor THREAD_POOL_EXECUTOR;
+
+    static {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+                CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
+                sPoolWorkQueue, sThreadFactory);
+        threadPoolExecutor.allowCoreThreadTimeOut(true);
+        THREAD_POOL_EXECUTOR = threadPoolExecutor;
+    }
+```
+
+看到这里，大家可能会认为，背后原来有一个线程池，且最大支持128的线程并发，加上长度为10的阻塞队列，可能会觉得就是在快速调用138个以内的AsyncTask子类的execute方法不会出现问题，而大于138则会抛出异常。  
+其实不是这样的，我们再仔细看一下代码，回顾一下sDefaultExecutor，真正在execute\(\)中调用的为sDefaultExecutor.execute：
+
+可以看到，如果此时有10个任务同时调用execute（这个方法是同步的synchronized）方法，第一个任务入队，然后在mActive = mTasks.poll\(\)\) != null被取出，并且赋值给mActivte，然后交给线程池去执行。然后第二个任务入队，但是此时mActive并不为null，并不会执行scheduleNext\(\);所以如果第一个任务比较慢，10个任务都会进入队列等待；真正执行下一个任务的时机是，线程池执行完成第一个任务以后，调用Runnable中的finally代码块中的scheduleNext，所以虽然内部有一个线程池，其实调用的过程还是线性的。一个接着一个的执行，相当于单线程。
+
+## 注意
+
+在Android4.1以后AsyncTask的execute\(\)方法可以在子线程中执行了，但是onPreExecute方法是与开始执行的execute方法是在同一个线程中的，所以如果在子线程中执行execute方法，一定要确保onPreExecute方法不执行刷新UI的方法，否则会抛出如下异常：
+
+```java
+android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original 
+thread that created a view hierarchy can touch its views.
+at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:6981)
+at android.view.ViewRootImpl.requestLayout(ViewRootImpl.java:1034)
+at android.view.View.requestLayout(View.java:17704)
+at android.view.View.requestLayout(View.java:17704)
+at android.view.View.requestLayout(View.java:17704)
+at android.view.View.requestLayout(View.java:17704)
+at android.widget.RelativeLayout.requestLayout(RelativeLayout.java:380)
+at android.view.View.requestLayout(View.java:17704)
+at android.widget.TextView.checkForRelayout(TextView.java:7109)
+at android.widget.TextView.setText(TextView.java:4082)
+at android.widget.TextView.setText(TextView.java:3940)
+at android.widget.TextView.setText(TextView.java:3915)
+at com.example.aaron.helloworld.MainActivity$MAsyncTask.onPreExecute(MainActivity.java:53)
+at android.os.AsyncTask.executeOnExecutor(AsyncTask.java:587)
+at android.os.AsyncTask.execute(AsyncTask.java:535)
+at com.example.aaron.helloworld.MainActivity$1$1.run(MainActivity.java:40)
+at java.lang.Thread.run(Thread.java:818)
+```
+
+使用AsyncTask执行多个任务需要创建多个AsyncTask对象，因为AsyncTask里面的线程池是静态的，所以是整个类共有的，因此每个AsyncTask对象要执行的任务都会放在一个线程池中执行，由一个线程池管理。
+
