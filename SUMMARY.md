@@ -41,7 +41,7 @@
   * [Android中的线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/androidzhong-de-xian-cheng-xing-tai.md)
     * [HandlerThread](handlerthread.md)
     * [IntentService](intentservice.md)
-  * [Androdi中的线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
+  * [Android中的线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
 * [RemoteView](remoteview.md)
 
 ## Java部分
