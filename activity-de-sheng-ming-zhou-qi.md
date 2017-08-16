@@ -24,20 +24,18 @@
 
 ## 1.2 异常情况下的生命周期
 
-### 1. 情况1：资源相关的系统配置发生改百年导致Activity被杀死并重新创建
+### 1. 情况1：资源相关的系统配置发生改变导致Activity被杀死并重新创建
 
-```
 当系统的配置（横屏或者竖屏切换等）发生了改变的时候，Activity会销毁并重新创建，生命周期如下图所示：
-```
 
 ![这里写图片描述](http://img.blog.csdn.net/20170220152414073?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjcwMzUxMjM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 注意：  
 1. onSaveInstancestate方法调用在onStop之前，但是与onPause没有既定的时序关系
 
-1. 在activity异常发生的时候，Activity会调用onSaveInstanceState来保存数据，然后activity会委托Window去保存数据，然后Window会委托DecorView去保存数据，然后顶层容器一一通知它的子元素进行保存数据。
+2. 在activity异常发生的时候，Activity会调用onSaveInstanceState来保存数据，然后activity会委托Window去保存数据，然后Window会委托DecorView去保存数据，然后顶层容器一一通知它的子元素进行保存数据.
 
-2. 布局中的每一个View默认实现了onSaveInstanceState\(\)方法，这样的话，这个UI的任何改变都会自动地存储和在activity重新创建的时候自动地恢复。**但是这种情况只有在你为这个UI提供了唯一的ID之后才起作用，如果没有提供ID，app将不会存储它的状态。**
+3. 布局中的每一个View默认实现了onSaveInstanceState\(\)方法，这样的话，这个UI的任何改变都会自动地存储和在activity重新创建的时候自动地恢复。**但是这种情况只有在你为这个UI提供了唯一的ID之后才起作用，如果没有提供ID，app将不会存储它的状态。**
 
 ### 2. 情况2：内存不足导致低优先级的Activity被杀死
 
@@ -47,8 +45,6 @@ Activity按照优先级从高到低，可以分为以下三种：
 （3） 后台Activity--已经被暂停的Activity，比如执行了onStop，优先级最低
 
 ### 1.3 常见生命周期的变化
-
-
 
 **启动Activity:**
 
@@ -84,11 +80,11 @@ Activity按照优先级从高到低，可以分为以下三种：
 
 **竖屏:**
 
-> `onSaveInstanceState()->onPause()->onStop-()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()->onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
+> `onSaveInstanceState()->onPause()->onStop()->onDestroy()->onCreate()->onStart()->onRestoreInstanceState()->onResume()`
 
 **Activity失去焦点**:
 
-> onPause\(\)\`
+> onPause\(\)
 
 **Activity不可见**:
 
@@ -113,17 +109,17 @@ Activity按照优先级从高到低，可以分为以下三种：
 
 1. **onSaveInstanceState**\(Bundle outState\)
 
-   * onSaveInstanceState方法被调用的情况有 :
+   onSaveInstanceState方法被调用的情况有 :
 
-     * 当用户按下HOME键时。
+   * 当用户按下HOME键时。
 
-     * 长按HOME键，选择运行其他的程序时。
+   * 长按HOME键，选择运行其他的程序时。
 
-     * 按下电源按键（关闭屏幕显示）时。
+   * 按下电源按键（关闭屏幕显示）时。
 
-     * 从Activity A中启动一个新的Activity时。
+   * 从Activity A中启动一个新的Activity时。
 
-     * 屏幕方向切换时，例如从竖屏切换到横屏时。（如果不指定configchange属性）
+   * 屏幕方向切换时，例如从竖屏切换到横屏时。（如果不指定configchange属性）
 
 2. **onRestoreInstanceState**\(Bundle outState\)
 
@@ -236,4 +232,46 @@ data由两部分组成，mimeType和URI，mimeType指的是媒体类型，而URI
 ### 注意
 
 `<category android:name="android.intent.catefory.DEFAULT"/>`的意义是在我们使用`queryActivity, resolveActivity`  的时候返回结果不为空，那么一定可以启动成功。
+
+使用案例：  
+（1）如果我们想要匹配 http 以 “.pdf” 结尾的路径，使得别的程序想要打开网络 pdf 时，用户能够可以选择我们的程序进行下载查看。  
+我们可以将 scheme 设置为 “http”，pathPattern 设置为 “.\*//.pdf”，整个 intent-filter 设置为：
+
+```
+<intent-filter>  
+    <action android:name="android.intent.action.VIEW"></action>  
+    <category android:name="android.intent.category.DEFAULT"></category>  
+    <data android:scheme="http" android:pathPattern=".*//.pdf"></data>  
+</intent-filter> 
+```
+
+如果你只想处理某个站点的 pdf，那么在 data 标签里增加 android:host=”yoursite.com” 则只会匹配[http://yoursite.com/xxx/xxx.pdf](http://yoursite.com/xxx/xxx.pdf)，但这不会匹配 www.yoursite.com，如果你也想匹配这个站点的话，你就需要再添加一个 data 标签，除了 android:host 改为 “www.yoursite.com” 其他都一样。
+
+（2）如果我们做的是一个IM应用，或是其他类似于微博之类的应用，如何让别人通过 Intent 进行调用出现在选择框里呢？我们只用注册 android.intent.action.SEND 与 mimeType 为 “text/plain” 或 “_/_” 就可以了，整个 intent-filter 设置为：
+
+```
+<intent-filter>  
+    <action android:name="android.intent.action.SEND" />  
+    <category android:name="android.intent.category.DEFAULT" />  
+    <data mimeType="*/*" />  
+</intent-filter> 
+```
+
+这里设置 category 的原因是，创建的 Intent 的实例默认 category 就包含了 Intent.CATEGORY\_DEFAULT ，google 这样做的原因是为了让这个 Intent 始终有一个 category。
+
+![](http://img.blog.csdn.net/20160614172340659 "这里写图片描述")
+
+（3）如果我们做的是一个音乐播放软件，当文件浏览器打开某音乐文件的时候，使我们的应用能够出现在选择框里？这类似于文件关联了，其实做起来跟上面一样，也很简单，我们只用注册 android.intent.action.VIEW 与 mimeType 为 “audio/\*” 就可以了，整个 intent-filter 设置为：
+
+```
+<intent-filter>  
+     <action android:name="android.intent.action.VIEW" />  
+     <category android:name="android.intent.category.DEFAULT" />  
+     <data android:mimeType="audio/*" />  
+</intent-filter> 
+```
+
+![](http://img.blog.csdn.net/20160614172309205 "这里写图片描述")
+
+
 
