@@ -123,6 +123,17 @@
 
    * 属性动画的运行机制是通过不断地对值进行操作来实现的，而初始值和结束值之间的动画过渡就是由ValueAnimator这个类来负责计算的。
 
+# Context的区别
+
+Activity和Service以及Application的Context是不一样的,Activity继承自ContextThemeWraper.其他的继承自ContextWrapper
+
+* 每一个Activity和Service以及Application的Context都是一个新的ContextImpl对象
+* getApplication\(\)用来获取Application实例的，但是这个方法只有在Activity和Service中才能调用的到。那么也许在绝大多数情况下我们都是在Activity或者Service中使用Application的，但是如果在一些其它的场景，比如BroadcastReceiver中也想获得Application的实例，这时就可以借助getApplicationContext\(\)方法，getApplicationContext\(\)比getApplication\(\)方法的作用域会更广一些，任何一个Context的实例，只要调用getApplicationContext\(\)方法都可以拿到我们的Application对象。
+* Activity在创建的时候会new一个ContextImpl对象并在attach方法中关联它，Application和Service也差不多。ContextWrapper的方法内部都是转调ContextImpl的方法
+* 创建对话框传入Application的Context是不可以的
+* 尽管Application、Activity、Service都有自己的ContextImpl，并且每个ContextImpl都有自己的mResources成员，但是由于它们的mResources成员都来自于唯一的ResourcesManager实例，所以它们看似不同的mResources其实都指向的是同一块内存
+* Context的数量等于Activity的个数 + Service的个数 + 1，这个1为Application
+
 ---
 
 ## Android引用类型
@@ -266,9 +277,9 @@
 
    * 在手机终端始终只要维护一个长连接即可，而且由于这个长连接是系统级别的不会出现被杀死而无法推送的情况。
 
-   * 省电，不会出现每个应用都各自维护一个自己的长连接。　
+   * 省电，不会出现每个应用都各自维护一个自己的长连接。
 
-   * 安全，只有在苹果注册的开发者才能够进行推送，等等。　
+   * 安全，只有在苹果注册的开发者才能够进行推送，等等。
 
    [android](http://lib.csdn.net/base/android)的长连接是`由每个应用各自维护的`，但是google也推出了和苹果技术[架构](http://lib.csdn.net/base/architecture)相似的推送框架，C2DM，云端推送功能，但是由于google的服务器不在中国境内，所以导致这个推送无法使用，android的开发者不得不自己去维护一个长连接，于是每个应用如果都24小时在线，那么都得各自维护一个长连接，这种电量和流量的消耗是可想而知的。虽然国内也出现了各种推送平台，但是都无法达到只维护一个长连接这种消耗的级别。
 
