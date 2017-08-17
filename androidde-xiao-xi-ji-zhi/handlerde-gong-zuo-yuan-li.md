@@ -6,7 +6,7 @@ Handler的工作主要包含消息的发送和接受过程，消息的发送可�
 
 ```
     /**
-     * 默认的构造器，我们平常在主线程中创建Handler的时候一般采用这个方法，因为主线程已经创	
+     * 默认的构造器，我们平常在主线程中创建Handler的时候一般采用这个方法，因为主线程已经创    
      * 建好了对应的Looper，在子线程中使用该方法，由于默认没有Looper，则抛出异常
      */
     public Handler() {
@@ -14,8 +14,8 @@ Handler的工作主要包含消息的发送和接受过程，消息的发送可�
     }
 
     /**
-     * 利用Callback方法构造，但是同样需要，这里的Callback指的是只包含handlerMessage接口方		
-     * 法的Handler内的接口。同样，如果没有当前线程没有Looper，依然会失败。
+     * 利用Callback方法构造，但是同样需要Looper，这里的Callback指的是只包含handlerMessage接口方        
+     * 法的Handler内的接口。同样，如果当前线程没有Looper，依然会失败。
      */
     public Handler(Callback callback) {
         this(callback, false);
@@ -36,7 +36,7 @@ Handler的工作主要包含消息的发送和接受过程，消息的发送可�
     }
 
     /**
-     * 对当前线程使用，并设置处理程序是不是异步的，处理程序默认是同步的，如果为true，则为异步	 
+     * 对当前线程使用，并设置处理程序是不是异步的，处理程序默认是同步的，如果为true，则为异步     
      * 处理
      * @hide
      */
@@ -124,7 +124,7 @@ Handler的工作主要包含消息的发送和接受过程，消息的发送可�
     }
 ```
 
-可以看出sendMessage是直接发送Message的，而post则是将Runable作为一个Callback接口放入消息中再发送的，而两者最后都在经过了层层的调用，最后调用了enqueMessage方法，将一个消息插入到了消息队列
+可以看出sendMessage是直接发送Message的，而post则是将Runable作为一个Callback接口放入消息中再发送的，而两者最后都在经过了层层的调用，最后调用了enqueMessage方法，将一个消息插入到了消息队列，**并且将自己的对象给了msg.target。**
 
 ## Handler的消息处理
 
@@ -150,4 +150,10 @@ Handler的工作主要包含消息的发送和接受过程，消息的发送可�
 # 主线程的消息循环模型
 
 ActivityThread通过ApplicationThread和AMS进行进程间通信，AMS以进程间通信的方式完成ActivityThread的请求后会回调ApplicationThread中的Binder方法，然后Application会向ActivityThread.H发送消息，H收到消息后会将ApplicationThread中的逻辑切换到ActivityThread中执行，即切换到主线程中去执行，这个过程就是主线程的消息循环模型
+
+# 总结： 
+
+当我们调用`handler.sendMessage(msg)`方法发送一个`Message`时，实际上这个`Message`是发送到**与当前线程绑定**的一个`MessageQueue`中，然后**与当前线程绑定**的`Looper`将会不断的从`MessageQueue`中取出新的`Message`，调用`msg.target.dispathMessage(msg)`方法将消息分发到与`Message`绑定的`handler.handleMessage()`方法中。
+
+一个`Thread`对应多个`Handler`一个`Thread`对应一个`Looper`和`MessageQueue`，`Handler`与`Thread`共享`Looper`和`MessageQueue`。`Message`只是消息的载体，将会被发送到**与线程绑定的唯一的**`MessageQueue`中，并且被**与线程绑定的唯一的**`Looper`分发，被与其自身绑定的`Handler`消费。
 

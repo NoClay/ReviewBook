@@ -54,17 +54,17 @@ public static void prepare() {
 
 ```
 public static void loop() {
-        final Looper me = myLooper();
+        final Looper me = myLooper();  //获取当前线程的looper
         if (me == null) {
             throw new RuntimeException("No Looper; Looper.prepare() wasn't called on this thread.");
         }
-        final MessageQueue queue = me.mQueue;
+        final MessageQueue queue = me.mQueue;//获取与looper绑定的MessageQueue
 
         // Make sure the identity of this thread is that of the local process,
         // and keep track of what that identity token actually is.
         Binder.clearCallingIdentity();
         final long ident = Binder.clearCallingIdentity();
-
+        //不断的获取对象，分发对象到Handler中消费
         for (;;) {
             Message msg = queue.next(); // might block
             if (msg == null) {
