@@ -62,9 +62,8 @@
   * [装载（load）](javabu-fen/lei-jia-zai-ji-zhi/zhuang-zai-load.md)
   * [链接（link）](javabu-fen/lei-jia-zai-ji-zhi/lian-jie-link.md)
   * [初始化](javabu-fen/lei-jia-zai-ji-zhi/chu-shi-hua.md)
+* [线程池](threadpool.md)
 * [线程部分](javabu-fen/xian-cheng-bu-fen.md)
-  * [线程的同步](javabu-fen/duo-xian-cheng-tong-bu.md)
-  * [线程池](threadpool.md)
 
 ## 操作系统
 
