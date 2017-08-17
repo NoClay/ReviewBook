@@ -132,181 +132,47 @@ File System API 是 H5 新加入的存储机制。它为 Web App 提供了一个
 
 ```
 WebView mWebView = (WebView) findViewById(R.id.webview);
-mWebView.setWebViewClient(
-new
- WebViewClient() {
+mWebView.setWebViewClient(new WebViewClient() {
             @Override
-
-public
- WebResourceResponse shouldInterceptRequest(WebView webView, final 
-String
- url) {
-                WebResourceResponse response = 
-null
-;
-
-boolean
- resDown = JSHelper.isURLDownValid(url);
-
-if
- (resDown) {
+            public WebResourceResponse shouldInterceptRequest(WebView webView, final String url) {
+                WebResourceResponse response = null;
+                boolean resDown = JSHelper.isURLDownValid(url);
+                if (resDown) {
                     jsStr = JsjjJSHelper.getResInputStream(url);
-
-if
- (url.endsWith(
-".png"
-)) {
-                        response = getWebResourceResponse(url, 
-"image/png"
-, 
-".png"
-);
-                    } 
-else
-if
- (url.endsWith(
-".gif"
-)) {
-                        response = getWebResourceResponse(url, 
-"image/gif"
-, 
-".gif"
-);
-                    } 
-else
-if
- (url.endsWith(
-".jpg"
-)) {
-                        response = getWebResourceResponse(url, 
-"image/jepg"
-, 
-".jpg"
-);
-                    } 
-else
-if
- (url.endsWith(
-".jepg"
-)) {
-                        response = getWebResourceResponse(url, 
-"image/jepg"
-, 
-".jepg"
-);
-                    } 
-else
-if
- (url.endsWith(
-".js"
-) 
-&
-&
- jsStr != 
-null
-) {
-                        response = getWebResourceResponse(
-"text/javascript"
-, 
-"UTF-8"
-, 
-".js"
-);
-                    } 
-else
-if
- (url.endsWith(
-".css"
-) 
-&
-&
- jsStr != 
-null
-) {
-                        response = getWebResourceResponse(
-"text/css"
-, 
-"UTF-8"
-, 
-".css"
-);
-                    } 
-else
-if
- (url.endsWith(
-".html"
-) 
-&
-&
- jsStr != 
-null
-) {
-                        response = getWebResourceResponse(
-"text/html"
-, 
-"UTF-8"
-, 
-".html"
-);
+                    if (url.endsWith(".png")) {
+                        response = getWebResourceResponse(url, "image/png", ".png");
+                    } else if (url.endsWith(".gif")) {
+                        response = getWebResourceResponse(url, "image/gif", ".gif");
+                    } else if (url.endsWith(".jpg")) {
+                        response = getWebResourceResponse(url, "image/jepg", ".jpg");
+                    } else if (url.endsWith(".jepg")) {
+                        response = getWebResourceResponse(url, "image/jepg", ".jepg");
+                    } else if (url.endsWith(".js") && jsStr != null) {
+                        response = getWebResourceResponse("text/javascript", "UTF-8", ".js");
+                    } else if (url.endsWith(".css") && jsStr != null) {
+                        response = getWebResourceResponse("text/css", "UTF-8", ".css");
+                    } else if (url.endsWith(".html") && jsStr != null) {
+                        response = getWebResourceResponse("text/html", "UTF-8", ".html");
                     }
                 }
-
-return
- response;
+                return response;
             }
         });
-
-private
- WebResourceResponse getWebResourceResponse(
-String
- url, 
-String
- mime, 
-String
- style) {
-        WebResourceResponse response = 
-null
-;
-
-try
- {
-            response = 
-new
- WebResourceResponse(mime, 
-"UTF-8"
-, 
-new
- FileInputStream(
-new
- File(getJSPath() + TPMD5.md5String(url) + style)));
-        } 
-catch
- (FileNotFoundException e) {
+        private WebResourceResponse getWebResourceResponse(String url, String mime, String style) {
+        WebResourceResponse response = null;
+        try {
+            response = new WebResourceResponse(mime, "UTF-8", new FileInputStream(new File(getJSPath() + TPMD5.md5String(url) + style)));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-return
- response;
+        return response;
     }
-
-public
-String
- getJsjjJSPath() {
-
-String
- splashTargetPath = JarEnv.sApplicationContext.getFilesDir().getPath() + 
-"/JS"
-;
-
-if
- (!TPFileSysUtil.isDirFileExist(splashTargetPath)) {
+    public String getJsjjJSPath() {
+        String splashTargetPath = JarEnv.sApplicationContext.getFilesDir().getPath() + "/JS";
+        if (!TPFileSysUtil.isDirFileExist(splashTargetPath)) {
             TPFileSysUtil.createDir(splashTargetPath);
         }
-
-return
- splashTargetPath + 
-"/"
-;
+        return splashTargetPath + "/";
     }
 ```
 
