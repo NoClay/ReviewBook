@@ -221,7 +221,7 @@ Activity和Service以及Application的Context是不一样的,Activity继承自Co
 
    * 避免在Bitmap上浪费内存
 
-   * 是有优化过的数据集合
+   * 使用优化过的数据集合
 
    * 知晓内存的开支情况
 
@@ -245,7 +245,7 @@ Activity和Service以及Application的Context是不一样的,Activity继承自Co
 
    * 对常量使用static final修饰符
 
-   * 使用增强型for循环语法
+   * 使用增强型for循环语法（foreach）
 
    * 多使用系统封装好的API
 
