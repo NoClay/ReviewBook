@@ -48,7 +48,6 @@ WebSettings webSettings = myWebView.getSettings();
 webSettings.setDomStorageEnabled(
 true
 );
-
 ```
 
 ##### Web SQL Database 存储机制：
@@ -68,7 +67,6 @@ String
 "db"
 ,Context.MODE_PRIVATE).getPath();
 webSettings.setDatabasePath(dbPath)
-
 ```
 
 ##### Application Cache 存储机制
@@ -97,7 +95,6 @@ webSettings.setAppCacheMaxSize(
 *
 1024
 );
-
 ```
 
 ##### Indexed Database 存储机制
@@ -112,7 +109,6 @@ WebSettings webSettings = myWebView.getSettings();
 webSettings.setJavaScriptEnabled(
 true
 );
-
 ```
 
 ##### File System API
@@ -140,7 +136,7 @@ mWebView.setWebViewClient(
 new
  WebViewClient() {
             @Override
-            
+
 public
  WebResourceResponse shouldInterceptRequest(WebView webView, final 
 String
@@ -148,14 +144,14 @@ String
                 WebResourceResponse response = 
 null
 ;
-                
+
 boolean
  resDown = JSHelper.isURLDownValid(url);
-                
+
 if
  (resDown) {
                     jsStr = JsjjJSHelper.getResInputStream(url);
-                    
+
 if
  (url.endsWith(
 ".png"
@@ -254,12 +250,12 @@ null
 );
                     }
                 }
-                
+
 return
  response;
             }
         });
-        
+
 private
  WebResourceResponse getWebResourceResponse(
 String
@@ -271,7 +267,7 @@ String
         WebResourceResponse response = 
 null
 ;
-        
+
 try
  {
             response = 
@@ -288,31 +284,30 @@ catch
  (FileNotFoundException e) {
             e.printStackTrace();
         }
-        
+
 return
  response;
     }
-    
+
 public
 String
  getJsjjJSPath() {
-        
+
 String
  splashTargetPath = JarEnv.sApplicationContext.getFilesDir().getPath() + 
 "/JS"
 ;
-        
+
 if
  (!TPFileSysUtil.isDirFileExist(splashTargetPath)) {
             TPFileSysUtil.createDir(splashTargetPath);
         }
-        
+
 return
  splashTargetPath + 
 "/"
 ;
     }
-    
 ```
 
 #### 常用 JS 本地化及延迟加载
@@ -321,204 +316,112 @@ return
 
 ```
 javascript: ;
-(
-function
-(
-) 
-{
-  
-try
-{
-    
-window
-.JSBridge = {
-      
-'invoke'
-: 
-function
-(
-name
-) 
-{
-        
-var
- args = [].slice.call(
-arguments
-, 
-1
-),
+(function() {
+  try{
+    window.JSBridge = {
+      'invoke': function(name) {
+        var args = [].slice.call(arguments, 1),
           callback = args.pop(),
-          params, obj = 
-this
-[name];
-        
-if
- (
-typeof
- callback !== 
-'function'
-) {
+          params, obj = this[name];
+        if (typeof callback !== 'function') {
           params = callback;
-          callback = 
-function
-(
-) 
-{}
-        } 
-else
- {
-          params = args[
-0
-]
-        } 
-if
- (
-typeof
- obj !== 
-'object'
- || 
-typeof
- obj.func !== 
-'function'
-) {
+          callback = function() {}
+        } else {
+          params = args[0]
+        } if (typeof obj !== 'object' || typeof obj.func !== 'function') {
           callback({
-            
-'err_msg'
-: 
-'system:function_not_exist'
-
+            'err_msg': 'system:function_not_exist'
           });
-          
-return
-
+          return
         }
         obj.callback = callback;
         obj.params = params;
         obj.func(params)
       },
-      
-'on'
-: 
-function
-(
-event, callback
-) 
-{
-        
-var
- obj = 
-this
-[
-'on'
- + event];
-        
-if
- (
-typeof
- obj !== 
-'object'
-) {
+      'on': function(event, callback) {
+        var obj = this['on' + event];
+        if (typeof obj !== 'object') {
           callback({
-            
-'err_msg'
-: 
-'system:function_not_exist'
-
+            'err_msg': 'system:function_not_exist'
           });
           retrun
         }
-        
-if
- (
-typeof
- callback !== 
-'undefined'
-) obj.callback = callback
+        if (typeof callback !== 'undefined') obj.callback = callback
       },
-      
-'login'
-: {
-        
-'func'
-: 
-function
-(
-params
-) 
-{
-          prompt(
-"login"
-, 
-JSON
-.stringify(params))
+      'login': {
+        'func': function(params) {
+          prompt("login", JSON.stringify(params))
         },
-        
-'params'
-: {},
-        
-'callback'
-: 
-function
-(
-res
-) 
-{}
+        'params': {},
+        'callback': function(res) {}
       },
-      
-'settitle'
-: {
-        
-'func'
-: 
-function
-(
-params
-) 
-{
-          prompt(
-"settitle"
-,
-JSON
-.stringify(params))
+      'settitle': {
+        'func': function(params) {
+          prompt("settitle",JSON.stringify(params))
         },
-        
-'params'
-: {},
-        
-'callback'
-: 
-function
-(
-res
-) 
-{}
+        'params': {},
+        'callback': function(res) {}
       },
-    }
-catch
-(e){
-    alert(
-'demo.js error:'
-+e);
+    }catch(e){
+    alert('demo.js error:'+e);
   }
-  
-var
- readyEvent = 
-document
-.createEvent(
-'Events'
-);
-  readyEvent.initEvent(
-'JSBridgeReady'
-, 
-true
-, 
-true
-);
-  
-document
-.dispatchEvent(readyEvent)
+  var readyEvent = document.createEvent('Events');
+  readyEvent.initEvent('JSBridgeReady', true, true);
+  document.dispatchEvent(readyEvent)
+  })();javascript: ;
+(function() {
+  try{
+    window.JSBridge = {
+      'invoke': function(name) {
+        var args = [].slice.call(arguments, 1),
+          callback = args.pop(),
+          params, obj = this[name];
+        if (typeof callback !== 'function') {
+          params = callback;
+          callback = function() {}
+        } else {
+          params = args[0]
+        } if (typeof obj !== 'object' || typeof obj.func !== 'function') {
+          callback({
+            'err_msg': 'system:function_not_exist'
+          });
+          return
+        }
+        obj.callback = callback;
+        obj.params = params;
+        obj.func(params)
+      },
+      'on': function(event, callback) {
+        var obj = this['on' + event];
+        if (typeof obj !== 'object') {
+          callback({
+            'err_msg': 'system:function_not_exist'
+          });
+          retrun
+        }
+        if (typeof callback !== 'undefined') obj.callback = callback
+      },
+      'login': {
+        'func': function(params) {
+          prompt("login", JSON.stringify(params))
+        },
+        'params': {},
+        'callback': function(res) {}
+      },
+      'settitle': {
+        'func': function(params) {
+          prompt("settitle",JSON.stringify(params))
+        },
+        'params': {},
+        'callback': function(res) {}
+      },
+    }catch(e){
+    alert('demo.js error:'+e);
+  }
+  var readyEvent = document.createEvent('Events');
+  readyEvent.initEvent('JSBridgeReady', true, true);
+  document.dispatchEvent(readyEvent)
   })();
-
 ```
 
 **关于 JS 延迟加载**
