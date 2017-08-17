@@ -13,6 +13,7 @@
 * [Broadcast](broadcast.md)
 * [Android的内存泄漏总结](androidde-nei-cun-xie-lou-zong-jie.md)
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
+* [Android性能优化](androidxing-neng-you-hua.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
   * [Binder](binder.md)
@@ -35,7 +36,7 @@
   * [Looper的工作原理](androidde-xiao-xi-ji-zhi/looperde-gong-zuo-yuan-li.md)
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 * [RemoteView](remoteview.md)
-* [Android中的线程池](androdizhong-de-xian-cheng-chi.md)
+* Android性能优化
 
 ## Java部分
 
