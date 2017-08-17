@@ -36,7 +36,6 @@
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 * [RemoteView](remoteview.md)
 * [Android中的线程池](androdizhong-de-xian-cheng-chi.md)
-* Android的内存泄漏总结
 
 ## Java部分
 
