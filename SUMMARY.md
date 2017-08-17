@@ -65,10 +65,18 @@
 
 ## 设计模式
 
+* [MVC与MVP](she-ji-mo-shi/mvcyu-mvp.md)
 * [面向对象六大原则](she-ji-mo-shi/mian-xiang-dui-xiang-liu-da-yuan-ze.md)
 * [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
 * [Builder模式](she-ji-mo-shi/buildermo-shi.md)
-* [MVC与MVP](she-ji-mo-shi/mvcyu-mvp.md)
+* [代理模式](she-ji-mo-shi/dai-li-mo-shi.md)
+* [原型模式](she-ji-mo-shi/yuan-xing-mo-shi.md)
+* [外观模式](she-ji-mo-shi/wai-guan-mo-shi.md)
+* [策略模式](she-ji-mo-shi/ce-lve-mo-shi.md)
+* [简单工厂](she-ji-mo-shi/jian-dan-gong-chang.md)
+* [观察者模式](she-ji-mo-shi/guan-cha-zhe-mo-shi.md)
+* [职责链模式](she-ji-mo-shi/zhi-ze-lian-mo-shi.md)
+* [适配器模式](she-ji-mo-shi/shi-pei-qi-mo-shi.md)
 
 ## 计算机网络
 
