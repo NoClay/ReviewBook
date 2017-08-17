@@ -30,15 +30,19 @@ class TaskWithResult implements Callable<T> {
 
 # 多线程**同步方法：**
 
-1. wait\(\)：使一个线程处于等待状态，并释放所持有的对象的lock
+1. **wait\(\)：**使一个线程处于等待状态，并释放所持有的对象的lock
 
-2. sleep\(\)：使一个正在运行的线程处于睡眠状态，是一个静态方法，调用此方法要捕获InterruptedException异常
+2. **sleep\(\)：**使一个正在运行的线程处于睡眠状态，是一个静态方法，调用此方法要捕获InterruptedException异常
 
-3. notify\(\)：唤醒一个处于等待状态的线程，这里的唤醒由jvm决定调度，且与优先级无关。
+3. **notify\(\)：**唤醒一个处于等待状态的线程，这里的唤醒由jvm决定调度，且与优先级无关。
 
-4. Allnotify\(\)：唤醒所有处于等待状态的线程。
+4. **notifyAll\(\)：**唤醒所有处于等待状态的线程。
 
-5. synchronized：利用对象的监视器属性加同步锁。
+5. **join\(\):**Thread的非静态方法join\(\)让一个线程B“加入”到另外一个线程A的尾部。在A执行完毕之前，B不能工作。另外，join\(\)方法还有带超时限制的重载版本。例如t.join\(5000\);则让线程等待5000毫秒，如果超过这个时间，则停止等待，变为可运行状态。
+
+6. **yield\(\)：**线程的让步，暂停当前执行的线程，并执行其他线程。要理解yield\(\)，必须了解线程的优先级的概念。线程总是存在优先级，优先级范围在1~10之间。JVM线程调度程序是基于优先级的抢先调度机制。在大多数情况下，当前运行的线程优先级将大于或等于线程池中任何线程的优先级。但这仅仅是大多数情况。注意：当设计多线程应用程序的时候，一定不要依赖于线程的优先级。因为线程调度优先级操作是没有保障的，只能把线程优先级作用作为一种提高程序效率的方法，但是要保证程序不依赖这种操作。 当线程池中线程都具有相同的优先级，调度程序的JVM实现自由选择它喜欢的线程。这时候调度程序的操作有两种可能：一是选择一个线程运行，直到它阻塞或者运行完成为止。二是时间分片，为池内的每个线程提供均等的运行机会。yield\(\)应该做的是让当前运行线程回到可运行状态，以允许具有相同优先级的其他线程获得运行机会。因此，使用yield\(\)的目的是让相同优先级的线程之间能适当的轮转执行。但是，实际中无法保证yield\(\)达到让步目的，因为让步的线程还有可能被线程调度程序再次选中。
+
+7. **synchronized：**利用对象的监视器属性加同步锁。
 
 # **Synchronized**
 
@@ -87,15 +91,14 @@ Synchronized是Java中解决并发问题的一种最常用的方法，也是最�
 public class  MutableInteger  
 {  
     private int value;  
-  
+
     public int get(){  
         return value;  
     }  
     public void set(int value){  
         this.value = value;  
     }  
-}  
-
+}
 ```
 
 以上代码中，get和set方法都在没有同步的情况下访问value。如果value被多个线程共享，假如某个线程调用了set，那么另一个正在调用get的线程可能会看到更新后的value值，也可能看不到。
@@ -106,15 +109,14 @@ public class  MutableInteger
 public class  SynchronizedInteger  
 {  
     private int value;  
-  
+
     public synchronized int get(){  
         return value;  
     }  
     public synchronized void set(int value){  
         this.value = value;  
     }  
-}  
-
+}
 ```
 
 对set和get方法进行了同步，加上了同一把对象锁，这样get方法可以看到set方法中value值的变化，从而每次通过get方法取得的value的值都是最新的value值。
@@ -248,7 +250,7 @@ ReentrantLock 与synchronized有相同的并发性和内存语义，还包含了
 
 ②对该变量操作完后，在某个时间再把变量刷新回主内存
 
-关于JAVA内存模型，更详细的可参考： [深入理解Java内存模型（一）——基础](http://ifeve.com/java-memory-model-1/)
+关于JAVA内存模型，更详细的可参考： [深入理解Java内存模型（一）——基础](http://ifeve.com/java-memory-model-1/)
 
 **Volatile修饰的变量会强制线程从主内存中读取，因此可以保证内存可见性，即使变量在多个线程中可见。**
 
@@ -316,6 +318,4 @@ volatile主要用在多个线程感知实例变量被更改了场合，从而使
 ②volatile只能保证数据的可见性，不能用来同步，因为多个线程并发访问volatile修饰的变量不会阻塞。
 
 synchronized不仅保证可见性，而且还保证原子性，因为，只有获得了锁的线程才能进入临界区，从而保证临界区中的所有语句都全部执行。多个线程争抢synchronized锁对象时，会出现阻塞。
-
-
 
