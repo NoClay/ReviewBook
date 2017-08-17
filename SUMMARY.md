@@ -20,7 +20,6 @@
   * [使用文件](ipcji-zhi/shi-yong-wen-jian.md)
   * [使用Messenger](ipcji-zhi/shi-yong-messenger.md)
   * [使用AIDL](ipcji-zhi/shi-yong-aidl.md)
-    * [使用Listener遇到的小问题](ipcji-zhi/shi-yong-aidl/shi-yong-listener-yu-dao-de-xiao-wen-ti.md)
     * [解决Binder的意外死亡](ipcji-zhi/shi-yong-aidl/jie-juebinder-de-yi-wai-si-wang.md)
     * [如何做远程服务的权限验证？](ipcji-zhi/shi-yong-aidl/ru-he-zuo-yuan-cheng-fu-wu-de-quan-xian-yan-zheng.md)
 * [ListView和RecyclerView](listviewde-you-hua.md)
