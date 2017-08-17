@@ -4,7 +4,7 @@
 
 ### 节制的使用Service 如果应用程序需要使用Service来执行后台任务的话，只有当任务正在执行的时候才应该让Service运行起来。当启动一个Service时，系统会倾向于将这个Service所依赖的进程进行保留，系统可以在LRUcache当中缓存的进程数量也会减少，导致切换程序的时候耗费更多性能。我们可以使用IntentService，当后台任务执行结束后会自动停止，避免了Service的内存泄漏。
 
-###  当界面不可见时释放内存 当用户打开了另外一个程序，我们的程序界面已经不可见的时候，我们应当将所有和界面相关的资源进行释放。重写Activity的onTrimMemory\(\)方法，然后在这个方法中监听TRIM\_MEMORY\_UI\_HIDDEN这个级别，一旦触发说明用户离开了程序，此时就可以进行资源释放操作了。
+### 当界面不可见时释放内存 当用户打开了另外一个程序，我们的程序界面已经不可见的时候，我们应当将所有和界面相关的资源进行释放。重写Activity的onTrimMemory\(\)方法，然后在这个方法中监听TRIM\_MEMORY\_UI\_HIDDEN这个级别，一旦触发说明用户离开了程序，此时就可以进行资源释放操作了。
 
 ### 当内存紧张时释放内存 onTrimMemory\(\)方法还有很多种其他类型的回调，可以在手机内存降低的时候及时通知我们，我们应该根据回调中传入的级别来去决定如何释放应用程序的资源。
 
@@ -32,7 +32,6 @@
 ```
 ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
 int heapSize = manager.getMemoryClass();
-
 ```
 
 结果以MB为单位进行返回，我们开发时应用程序的内存不能超过这个限制，否则会出现OOM。
@@ -60,8 +59,7 @@ int heapSize = manager.getMemoryClass();
 
 ```
 static int intVal = 42;  
-static String strVal = "Hello, world!";  
-
+static String strVal = "Hello, world!";
 ```
 
 编译器会为上面的代码生成一个初始方法，称为方法，该方法会在定义类第一次被使用的时候调用。这个方法会将42的值赋值到intVal当中，从字符串常量表中提取一个引用赋值到strVal上。当赋值完成后，我们就可以通过字段搜寻的方式去访问具体的值了。
@@ -70,8 +68,7 @@ final进行优化:
 
 ```
 static final int intVal = 42;  
-static final String strVal = "Hello, world!";  
-
+static final String strVal = "Hello, world!";
 ```
 
 这样，定义类就不需要方法了，因为所有的常量都会在dex文件的初始化器当中进行初始化。当我们调用intVal时可以直接指向42的值，而调用strVal会用一种相对轻量级的字符串常量方式，而不是字段搜寻的方式。
@@ -84,36 +81,31 @@ static final String strVal = "Hello, world!";
 static class Counter {  
     int mCount;  
 }  
-  
+
 Counter[] mArray = ...  
-  
+
 public void zero() {  
     int sum = 0;  
-    for (int i = 0; i 
-<
- mArray.length; ++i) {  
+    for (int i = 0; i <mArray.length; ++i) {  
         sum += mArray[i].mCount;  
     }  
 }  
-  
+
 public void one() {  
     int sum = 0;  
     Counter[] localArray = mArray;  
     int len = localArray.length;  
-    for (int i = 0; i 
-<
- len; ++i) {  
+    for (int i = 0; i <len; ++i) {  
         sum += localArray[i].mCount;  
     }  
 }  
-  
+
 public void two() {  
     int sum = 0;  
     for (Counter a : mArray) {  
         sum += a.mCount;  
     }  
-}  
-
+}
 ```
 
 zero\(\)最慢，每次都要计算mArray的长度，one\(\)相对快得多，two\(\)fangfa在没有JIT\(Just In Time Compiler\)的设备上是运行最快的，而在有JIT的设备上运行效率和one\(\)方法不相上下，需要注意这种写法需要JDK1.5之后才支持。
@@ -166,8 +158,7 @@ public void onMoreClick() {
         editExtra2 = (EditText) inflatedView.findViewById(R.id.edit_extra2);  
         editExtra3 = (EditText) inflatedView.findViewById(R.id.edit_extra3);  
     }  
-}  
-
+}
 ```
 
 tips：ViewStub所加载的布局是不可以使用标签的，因此这有可能导致加载出来出来的布局存在着多余的嵌套结构。
