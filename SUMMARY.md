@@ -23,7 +23,6 @@
   * [使用Messenger](ipcji-zhi/shi-yong-messenger.md)
   * [使用AIDL](ipcji-zhi/shi-yong-aidl.md)
 * [ListView和RecyclerView](listviewde-you-hua.md)
-  * [ListView的优化](listviewde-you-hua/listviewde-you-hua.md)
 * [View事件分发](viewshi-jian-fen-fa.md)
   * [View的滑动](viewshi-jian-fen-fa/viewde-ji-chu-zhi-shi.md)
   * [View的弹性滑动](viewshi-jian-fen-fa/viewde-dan-xing-hua-dong.md)
