@@ -11,6 +11,7 @@
 * [Fragment的生命周期](fragmentde-sheng-ming-zhou-qi.md)
 * [Service的生命周期](servicede-sheng-ming-zhou-qi.md)
 * [Broadcast](broadcast.md)
+* [Android的内存泄漏总结](androidde-nei-cun-xie-lou-zong-jie.md)
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
@@ -35,9 +36,7 @@
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 * [RemoteView](remoteview.md)
 * [Android中的线程池](androdizhong-de-xian-cheng-chi.md)
-* [Android中的线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/androidzhong-de-xian-cheng-xing-tai.md)
-  * [HandlerThread](handlerthread.md)
-  * [IntentService](intentservice.md)
+* Android的内存泄漏总结
 
 ## Java部分
 
