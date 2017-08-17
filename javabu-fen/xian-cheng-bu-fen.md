@@ -56,6 +56,69 @@ Synchronized是Java中解决并发问题的一种最常用的方法，也是最�
 
 通过这两段描述，我们应该能很清楚的看出Synchronized的实现原理，Synchronized的语义底层是通过一个monitor的对象来完成，其实wait/notify等方法也依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常的原因。
 
+在并发编程中，多线程同时并发访问的资源叫做临界资源，当多个线程同时访问对象并要求操作相同资源时，分割了原子操作就有可能出现数据的不一致或数据不完整的情况，为避免这种情况的发生，我们会采取同步机制，以确保在某一时刻，方法内只允许有一个线程。
+
+采用synchronized修饰符实现的同步机制叫做互斥锁机制，它所获得的锁叫做互斥锁。每个对象都有一个monitor\(锁标记\)，当线程拥有这个锁标记时才能访问这个资源，没有锁标记便进入锁池。任何一个对象系统都会为其创建一个互斥锁，这个锁是为了分配给线程的，防止打断原子操作。每个对象的锁只能分配给一个线程，因此叫做互斥锁。
+
+这里就使用同步机制获取互斥锁的情况，进行几点说明：
+
+1. 如果同一个方法内同时有两个或更多线程，则每个线程有自己的局部变量拷贝。
+2. 类的每个实例都有自己的对象级别锁。当一个线程访问实例对象中的synchronized同步代码块或同步方法时，该线程便获取了该实例的对象级别锁，其他线程这时如果要访问synchronized同步代码块或同步方法，便需要阻塞等待，直到前面的线程从同步代码块或方法中退出，释放掉了该对象级别锁。
+3. 访问同一个类的不同实例对象中的同步代码块，不存在阻塞等待获取对象锁的问题，因为它们获取的是各自实例的对象级别锁，相互之间没有影响。
+4. 持有一个对象级别锁不会阻止该线程被交换出来，也不会阻塞其他线程访问同一示例对象中的非synchronized代码。当一个线程A持有一个对象级别锁（即进入了synchronized修饰的代码块或方法中）时，线程也有可能被交换出去，此时线程B有可能获取执行该对象中代码的时间，但它只能执行非同步代码（没有用synchronized修饰），当执行到同步代码时，便会被阻塞，此时可能线程规划器又让A线程运行，A线程继续持有对象级别锁，当A线程退出同步代码时（即释放了对象级别锁），如果B线程此时再运行，便会获得该对象级别锁，从而执行synchronized中的代码。
+5. 持有对象级别锁的线程会让其他线程阻塞在所有的synchronized代码外。例如，在一个类中有三个synchronized方法a，b，c，当线程A正在执行一个实例对象M中的方法a时，它便获得了该对象级别锁，那么其他的线程在执行同一实例对象（即对象M）中的代码时，便会在所有的synchronized方法处阻塞，即在方法a，b，c处都要被阻塞，等线程A释放掉对象级别锁时，其他的线程才可以去执行方法a，b或者c中的代码，从而获得该对象级别锁。
+6. 使用synchronized（obj）同步语句块，可以获取指定对象上的对象级别锁。obj为对象的引用，如果获取了obj对象上的对象级别锁，在并发访问obj对象时时，便会在其synchronized代码处阻塞等待，直到获取到该obj对象的对象级别锁。当obj为this时，便是获取当前对象的对象级别锁。
+7. 类级别锁被特定类的所有示例共享，它用于控制对static成员变量以及static方法的并发访问。具体用法与对象级别锁相似。
+8. 互斥是实现同步的一种手段，临界区、互斥量和信号量都是主要的互斥实现方式。synchronized关键字经过编译后，会在同步块的前后分别形成monitorenter和monitorexit这两个字节码指令。根据虚拟机规范的要求，在执行monitorenter指令时，首先要尝试获取对象的锁，如果获得了锁，把锁的计数器加1，相应地，在执行monitorexit指令时会将锁计数器减1，当计数器为0时，锁便被释放了。由于synchronized同步块对同一个线程是可重入的，因此一个线程可以多次获得同一个对象的互斥锁，同样，要释放相应次数的该互斥锁，才能最终释放掉该锁。
+
+# 内存可见性
+
+加锁（synchronized同步）的功能不仅仅局限于互斥行为，同时还存在另外一个重要的方面：内存可见性。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且还希望确保当一个线程修改了对象状态后，其他线程能够看到该变化。而线程的同步恰恰也能够实现这一点。
+
+内置锁可以用于确保某个线程以一种可预测的方式来查看另一个线程的执行结果。为了确保所有的线程都能看到共享变量的最新值，可以在所有执行读操作或写操作的线程上加上同一把锁。下图示例了同步的可见性保证。
+
+[![](https://camo.githubusercontent.com/e55eb94078f86c197d053aa7d05d005fc8bb7d0e/687474703a2f2f696d672e626c6f672e6373646e2e6e65742f3230313331323132323131303239313235)](https://camo.githubusercontent.com/e55eb94078f86c197d053aa7d05d005fc8bb7d0e/687474703a2f2f696d672e626c6f672e6373646e2e6e65742f3230313331323132323131303239313235)
+
+当线程A执行某个同步代码块时，线程B随后进入由同一个锁保护的同步代码块，这种情况下可以保证，当锁被释放前，A看到的所有变量值（锁释放前，A看到的变量包括y和x）在B获得同一个锁后同样可以由B看到。换句话说，当线程B执行由锁保护的同步代码块时，可以看到线程A之前在同一个锁保护的同步代码块中的所有操作结果。如果在线程A unlock M之后，线程B才进入lock M，那么线程B都可以看到线程A unlock M之前的操作，可以得到i=1，j=1。如果在线程B unlock M之后，线程A才进入lock M，那么线程B就不一定能看到线程A中的操作，因此j的值就不一定是1。
+
+现在考虑如下代码：
+
+```
+public class  MutableInteger  
+{  
+    private int value;  
+  
+    public int get(){  
+        return value;  
+    }  
+    public void set(int value){  
+        this.value = value;  
+    }  
+}  
+
+```
+
+以上代码中，get和set方法都在没有同步的情况下访问value。如果value被多个线程共享，假如某个线程调用了set，那么另一个正在调用get的线程可能会看到更新后的value值，也可能看不到。
+
+通过对set和get方法进行同步，可以使MutableInteger成为一个线程安全的类，如下：
+
+```
+public class  SynchronizedInteger  
+{  
+    private int value;  
+  
+    public synchronized int get(){  
+        return value;  
+    }  
+    public synchronized void set(int value){  
+        this.value = value;  
+    }  
+}  
+
+```
+
+对set和get方法进行了同步，加上了同一把对象锁，这样get方法可以看到set方法中value值的变化，从而每次通过get方法取得的value的值都是最新的value值。
+
 # Synchronized和Lock的区别？
 
 同步的实现当然是采用锁了，java中使用锁的两个基本工具是 synchronized 和 Lock。
@@ -78,7 +141,7 @@ synchronized 用在代码块的使用方式：synchronized\(obj\){//todo code he
 
 2、与wait\(\)/notify\(\)/nitifyAll\(\)一起使用时，比较方便
 
-wait\(\) 与notify\(\)/notifyAll\(\)
+# wait\(\) 与notify\(\)/notifyAll\(\)
 
 **这三个方法都是Object的方法，并不是线程的方法！**
 
@@ -172,4 +235,87 @@ ReentrantLock 与synchronized有相同的并发性和内存语义，还包含了
 使用建议：
 
 在并发量比较小的情况下，使用synchronized是个不错的选择，但是在并发量比较高的情况下，其性能下降很严重，此时ReentrantLock是个不错的方案。
+
+# Volatile
+
+要想理解volatile关键字，得先了解下JAVA的内存模型，Java内存模型的抽象示意图如下：
+
+![](http://ifeve.com/wp-content/uploads/2013/01/113.png?_=5492880)
+
+从图中可以看出：
+
+①每个线程都有一个自己的本地内存空间--线程栈空间，线程执行时，先把变量从主内存读取到线程自己的本地内存空间，然后再对该变量进行操作
+
+②对该变量操作完后，在某个时间再把变量刷新回主内存
+
+关于JAVA内存模型，更详细的可参考： [深入理解Java内存模型（一）——基础](http://ifeve.com/java-memory-model-1/)
+
+**Volatile修饰的变量会强制线程从主内存中读取，因此可以保证内存可见性，即使变量在多个线程中可见。**
+
+## Volatile关键字的非原子性
+
+仅仅靠Volatile关键字修饰的变量是不能保证线程的安全性，利用volatile可以消去单例模式的双重check。
+
+## **volatile关键字修饰的变量不会被指令重排序优化。**
+
+这里以《深入理解JAVA虚拟机》中一个例子来说明下自己的理解：
+
+线程A执行的操作如下：
+
+[![](http://common.cnblogs.com/images/copycode.gif "复制代码")](javascript:void%280%29;)
+
+```
+Map configOptions ;
+char[] configText;
+
+
+volatile
+ boolean initialized = false;
+
+//线程A首先从文件中读取配置信息,调用process...处理配置信息,处理完成了将initialized 设置为true
+configOptions = new HashMap();
+configText = readConfigFile(fileName);
+processConfig(configText, configOptions);//负责将配置信息configOptions 成功初始化
+initialized = true;
+```
+
+[![](http://common.cnblogs.com/images/copycode.gif "复制代码")](javascript:void%280%29;)
+
+线程B等待线程A把配置信息初始化成功后，使用配置信息去干活.....线程B执行的操作如下：
+
+[![](http://common.cnblogs.com/images/copycode.gif "复制代码")](javascript:void%280%29;)
+
+```
+while(!initialized)
+{
+    sleep();
+}
+
+//使用配置信息干活
+doSomethingWithConfig();
+```
+
+[![](http://common.cnblogs.com/images/copycode.gif "复制代码")](javascript:void%280%29;)
+
+如果initialized变量不用 volatile 修饰，在线程A执行的代码中就有可能指令重排序。
+
+即：线程A执行的代码中的最后一行：initialized = true 重排序到了processConfig方法调用的前面执行了，这就意味着：配置信息还未成功初始化，但是initialized变量已经被设置成true了。那么就导致 线程B的while循环“提前”跳出，拿着一个还未成功初始化的配置信息去干活\(doSomethingWithConfig方法\)。。。。
+
+因此，initialized变量就必须得用 volatile修饰。这样，就不会发生指令重排序，也即：只有当配置信息被线程A成功初始化之后，initialized变量才会初始化为true。**综上，volatile 修饰的变量会禁止指令重排序（有序性）**
+
+## **volatile 与 synchronized 的比较**
+
+volatile主要用在多个线程感知实例变量被更改了场合，从而使得各个线程获得最新的值。它强制线程每次从主内存中讲到变量，而不是从线程的私有内存中读取变量，从而保证了数据的可见性。
+
+关于synchronized，可参考：[JAVA多线程之Synchronized关键字--对象锁的特点](http://www.cnblogs.com/hapjin/p/5452663.html)
+
+比较：
+
+①volatile轻量级，只能修饰变量。synchronized重量级，还可修饰方法
+
+②volatile只能保证数据的可见性，不能用来同步，因为多个线程并发访问volatile修饰的变量不会阻塞。
+
+synchronized不仅保证可见性，而且还保证原子性，因为，只有获得了锁的线程才能进入临界区，从而保证临界区中的所有语句都全部执行。多个线程争抢synchronized锁对象时，会出现阻塞。
+
+
 
