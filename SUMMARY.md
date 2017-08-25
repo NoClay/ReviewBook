@@ -36,6 +36,7 @@
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 * [RemoteView](remoteview.md)
 * [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
+  * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
 
 ## Java部分
 
