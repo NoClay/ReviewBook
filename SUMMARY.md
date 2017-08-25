@@ -35,6 +35,7 @@
   * [Looper的工作原理](androidde-xiao-xi-ji-zhi/looperde-gong-zuo-yuan-li.md)
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
 * [RemoteView](remoteview.md)
+* [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
 
 ## Java部分
 
