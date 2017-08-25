@@ -37,6 +37,7 @@
 * [RemoteView](remoteview.md)
 * [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
   * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
+  * [线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
 
 ## Java部分
 
