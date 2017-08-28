@@ -6,7 +6,7 @@
 
 它的实现方式是通过一种扩展的观察者模式来实现的。
 
-![](http://upload-images.jianshu.io/upload_images/1008453-7133ff9a13dd9a59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](http://upload-images.jianshu.io/upload_images/1008453-7133ff9a13dd9a59.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 上面一根水管为事件产生的水管，叫它`上游`吧，下面一根水管为事件接收的水管叫它`下游`吧。
 
@@ -14,7 +14,7 @@
 
 这里的`上游`和`下游`就分别对应着RxJava中的`Observable`和`Observer`，它们之间的连接就对应着`subscribe()`
 
-**注意: 只有当上游和下游建立连接之后, 上游才会开始发送事件. 也就是调用了`subscribe()`方法之后才开始发送事件.**
+**注意: 只有当上游和下游建立连接之后, 上游才会开始发送事件. 也就是调用了**`subscribe()`**方法之后才开始发送事件.**
 
 举个例子：
 
@@ -27,7 +27,9 @@ Observable.create(new ObservableOnSubscribe<Integer>() {
                 emitter.onNext(3);
                 emitter.onComplete();
             }
-        }).subscribe(new Observer<Integer>() {
+        }).subscribeOn(Schedulers.newThread())                                              
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Integer>() {
             @Override
             public void onSubscribe(Disposable d) {
                 Log.d(TAG, "subscribe");
@@ -59,7 +61,9 @@ Observable.create(new ObservableOnSubscribe<Integer>() {
    * 当上游发送了一个onError后, 上游onError之后的事件将`继续`发送, 而下游收到onError事件之后将`不再继续`接收事件.
    * 上游可以不发送onComplete或onError.
    * 最为关键的是onComplete和onError必须唯一并且互斥, 即不能发多个onComplete, 也不能发多个onError, 也不能先发一个onComplete, 然后再发一个onError, 反之亦然
-4. Disposeable 可丢弃的，作为下游控制的一个开端，
+4. Disposeable 可丢弃的，作为下游控制的一个开关
+5. 不带任何参数的`subscribe()`表示下游不关心任何事件,你上游尽管发你的数据去吧, 老子可不管你发什么
+   带有一个`Consumer`参数的方法表示下游只关心onNext事件, 其他的事件我假装没看见,
 
 
 
