@@ -176,5 +176,26 @@ zip.png
 
 其中一根水管负责发送`圆形事件` , 另外一根水管负责发送`三角形事件` , 通过Zip操作符, 使得`圆形事件` 和`三角形事件` 合并为了一个`矩形事件` .
 
+## sample
 
+```java
+Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                for (int i = 0; ; i++) {
+                    emitter.onNext(i);
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .sample(2, TimeUnit.SECONDS)  //sample取样
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.d(TAG, "" + integer);
+                    }
+                });
+```
+
+这里用了一个`sample`操作符, 简单做个介绍, 这个操作符每隔指定的时间就从上游中取出一个事件发送给下游.
 
