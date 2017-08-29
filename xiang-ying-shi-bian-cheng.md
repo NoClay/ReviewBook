@@ -38,7 +38,7 @@ System.out.print(“b=”+b)    //  b=11
 说完了了响应式的由来，我们就可以谈谈什么是响应式编程了。
 
 响应式编程是一种**通过异步和数据流来构建事物关系的编程模型**。这里每个词都很重要，“事物的关系”是响应式编程的核心理念，“数据流”和“异步”是实现这个核心理念的关键。为了帮助大家理解这个概念，我们不妨以APP初始化业务为例来拆解一下这几个词。  
-![](http://upload-images.jianshu.io/upload_images/689802-246858228f5a8fac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](http://upload-images.jianshu.io/upload_images/689802-246858228f5a8fac.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 > 这是一个比较理想化的APP初始化逻辑，完成SDK初始化，数据库初始化，登陆，之后跳转主界面
 
