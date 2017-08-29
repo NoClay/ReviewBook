@@ -40,6 +40,7 @@
   * [线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
 * [RxJava](rxjava.md)
   * [RxJava的背压问题](rxjava/rxjavade-bei-ya-wen-ti.md)
+* [热修复](re-xiu-fu.md)
 
 ## Java部分
 
