@@ -92,6 +92,22 @@ public class Singleton {
 
 ## 再次优化
 
+```java
+public class SingletonHolder {
+
+    private static class Singleton{
+        static instance = new Singleton();
+    }
+    public Singleton getInstance(){
+        return Singleton.instance;
+    }
+}
+```
+
+因为内部成员只有在用的时候才会进行初始化操作，所以这种方式和上边的饿汉式相比，更加优化。
+
+## 再次优化
+
 利用枚举类型来实现单例：
 
 ```java
