@@ -61,9 +61,7 @@ public class Singleton{
 
 利用volatile关键字：
 
-双重加锁机制的实现会使用一个关键字volatile，它的意思是：被volatile修饰的变量的值，将不会被本地线程缓存，所有对该变量的读写都是直接操作共享内存，从而确保多个线程能正确的处理该变量。
-
-所以利用这个关键字可以去掉双重检查变为单重检查：
+双重加锁机制的实现会使用一个关键字volatile，它的意思是：被volatile修饰的变量的值，将不会被本地线程缓存，所有对该变量的读写都是直接操作共享内存，从而确保多个线程能正确的处理该变量。同时Volatile可以禁止指令重排序，达到更好的效果。
 
 ```java
 public class Singleton {
@@ -81,7 +79,9 @@ public class Singleton {
         if(instance == null){
             //同步块，线程安全的创建实例
             synchronized (Singleton.class) {
-                instance = new Singleton();
+                if(instance == null){
+                    instance = new Singleton();
+                }
             }
         }
         return instance;
