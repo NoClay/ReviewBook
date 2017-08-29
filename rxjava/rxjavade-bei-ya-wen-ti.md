@@ -17,10 +17,66 @@
 
 ![](https://dn-mhke0kuv.qbox.me/45aaa155f3b4ed976a65.png)
 
-  
-
-
 观察者可以根据自身实际情况按需拉取数据，而不是被动接收（也就相当于告诉上游观察者把速度慢下来），最终实现了上游被观察者发送事件的速度的控制，实现了背压的策略。
+
+# 源码
+
+```java
+public class FlowableOnBackpressureBufferStategy{
+...
+        @Override
+        public void onNext(T t) {
+            if (done) {
+                return;
+            }
+            boolean callOnOverflow = false;
+            boolean callError = false;
+            Deque<T> dq = deque;
+            synchronized (dq) {
+               if (dq.size() == bufferSize) {
+                   switch (strategy) {
+                   case DROP_LATEST:
+                       dq.pollLast();
+                       dq.offer(t);
+                       callOnOverflow = true;
+                       break;
+                   case DROP_OLDEST:
+                       dq.poll();
+                       dq.offer(t);
+                       callOnOverflow = true;
+                       break;
+                   default:
+                       // signal error
+                       callError = true;
+                       break;
+                   }
+               } else {
+                   dq.offer(t);
+               }
+            }
+
+            if (callOnOverflow) {
+                if (onOverflow != null) {
+                    try {
+                        onOverflow.run();
+                    } catch (Throwable ex) {
+                        Exceptions.throwIfFatal(ex);
+                        s.cancel();
+                        onError(ex);
+                    }
+                }
+            } else if (callError) {
+                s.cancel();
+                onError(new MissingBackpressureException());
+            } else {
+                drain();
+            }
+        }
+...
+}
+```
+
+在这段源码中，根据不同的背压策略进行了不同的处理措施，当然这只是列举了一段关于buffer背压策略的例子。
 
 # 根源
 
