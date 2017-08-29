@@ -102,7 +102,7 @@ method->insns = (const u2*) hookInfo;
 2，获取问题方法call到C层的指针  
 3，通过获取的指针做相应的操作：调用Java层的回调方法继续处理（DexPosed）或者直接通过反射调用Java层的补丁方法\(AndFix\)。
 
-以Dexposed为例：![](http://upload-images.jianshu.io/upload_images/689802-e28a1a6ae68627f1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+以Dexposed为例：![](http://upload-images.jianshu.io/upload_images/689802-e28a1a6ae68627f1.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 至于具体的代码解释，请直接看[Android中免Root实现Hook的Dexposed框架实现原理解析以及如何实现应用的热修复](http://gold.xitu.io/entry/5730a04f79df540060cea838)
 
@@ -184,7 +184,7 @@ findClass\(\)方法如下：
 
 如你所见，**当需要加载一个类的时候，会在pathList中去寻找，并且是通过顺序遍历各个dex包的方式，一旦找到目标类，则停止遍历**。
 
-![](http://upload-images.jianshu.io/upload_images/689802-1692057ea5279167.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](http://upload-images.jianshu.io/upload_images/689802-1692057ea5279167.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 这就给了我们一个想法，有没有可能把打了补丁的dex插入到pathList中，当需要加载有问题的类的时候，根据遍历，首先查到已经修复的类，遍历结束，也就完成了修复。（当然了，这个想法是腾讯空间Android工程师想到的）
 
@@ -195,10 +195,11 @@ findClass\(\)方法如下：
 * UrlClassLoader 从Url列表中加载相关的jar文件，但是dalvik无法直接识别jar，so.....
 
 * PathClassLoader 它只会去读取 /data/dalvik-cache 目录下的 dex 文件，就是已安装的apk,
-* DexClassLoader 可以用来从.jar和.apk类型的文件内部加载classes、dex文件。而且，它和PathClassLoader继承自共同的父类。显然，这是最合适的加载器。
-  ![](http://upload-images.jianshu.io/upload_images/689802-a15c1c2fccc5d87c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-* 如何防止自己的类被打上 CLASS\_ISPREVERIFIED标志
+* DexClassLoader 可以用来从.jar和.apk类型的文件内部加载classes、dex文件。而且，它和PathClassLoader继承自共同的父类。显然，这是最合适的加载器。  
+  ![](http://upload-images.jianshu.io/upload_images/689802-a15c1c2fccc5d87c.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
+
+* 如何防止自己的类被打上 CLASS\_ISPREVERIFIED标志  
   这个标志是虚拟机的一种优化手段，打上这个标志之后，就不会引用其他dex中的类，如果引用了，则报错。解决方案也很简单，就是在类中引用其他dex包的引用，具体方法请直接Google。
 
 
