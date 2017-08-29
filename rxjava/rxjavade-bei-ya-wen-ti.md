@@ -1,6 +1,15 @@
 # 背压问题
 
-所谓的`Backpressure`其实就是为了控制流量, 水缸存储的能力毕竟有限, 因此我们还得从`源头`去解决问题, 既然你发那么快, 数据量那么大, 那我就想办法不让你发那么快呗.
+**背压是指在异步场景中，被观察者发送事件速度远快于观察者的处理速度的情况下，一种告诉上游的被观察者降低发送速度的策略**
+
+简而言之，**背压是流速控制的一种策略**。
+
+需要强调两点：
+
+* 背压策略的一个前提是
+  **异步环境**
+  ，也就是说，被观察者和观察者处在不同的线程环境中。
+* 背压（Backpressure）并不是一个像flatMap一样可以在程序中直接使用的操作符，他只是一种控制事件流速的策略。
 
 # 根源
 
@@ -157,19 +166,13 @@ FlowableEmitter是个接口，继承Emitter，Emitter里面就是我们的onNext
 long requested();
 ```
 
-![](http://upload-images.jianshu.io/upload_images/1008453-0b408cf6d2360677.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-  
-
+![](http://upload-images.jianshu.io/upload_images/1008453-0b408cf6d2360677.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 同步request.png
 
 这张图的意思就是当上下游在同一个线程中的时候，在`下游`调用request\(n\)就会直接改变`上游`中的requested的值，多次调用便会叠加这个值，而上游每发送一个事件之后便会去减少这个值，当这个值减少至0的时候，继续发送事件便会抛异常了。
 
-![](http://upload-images.jianshu.io/upload_images/1008453-6ae614d9cb3927cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-  
-
+![](http://upload-images.jianshu.io/upload_images/1008453-6ae614d9cb3927cb.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
 
 异步request.png
 
