@@ -80,7 +80,7 @@
 * [策略模式](she-ji-mo-shi/ce-lve-mo-shi.md)
 * [简单工厂](she-ji-mo-shi/jian-dan-gong-chang.md)
 * [观察者模式](she-ji-mo-shi/guan-cha-zhe-mo-shi.md)
-* [职责链模式](she-ji-mo-shi/zhi-ze-lian-mo-shi.md)
+* [职责链模式](设计模式/职责链模式.md)
 * [适配器模式](she-ji-mo-shi/shi-pei-qi-mo-shi.md)
 
 ## 计算机网络
