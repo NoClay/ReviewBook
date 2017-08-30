@@ -47,7 +47,7 @@
 ## Java部分
 
 * [Java基础知识](Java/final-finally-finalizede-qu-bie.md)
-* [垃圾回收机制](Java/垃圾回收机制.md)
+* [垃圾回收机制](Java/垃圾回收机制/垃圾回收机制.md)
   * [对象已死吗？](Java/垃圾回收机制/dui-xiang-yi-si-ma.md)
   * [HotSpot的算法实现](Java/垃圾回收机制/hotspotde-suan-fa-shi-xian.md)
   * [内存分配与回收策略](Java/垃圾回收机制/nei-cun-fen-pei-yu-hui-shou-ce-lve.md)
