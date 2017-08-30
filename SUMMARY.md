@@ -12,7 +12,7 @@
 * [Service的生命周期](Android/Service的生命周期.md)
 * [Broadcast](Android/Broadcast.md)
 * [Android的内存泄漏总结](Android/Android的内存泄漏总结.md)
-* [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
+* [如何解决WebView的内存泄漏](Android/如何解决WebView的内存泄漏.md)
 * [Android性能优化](androidxing-neng-you-hua.md)
 * [IPC机制](ipcji-zhi.md)
   * [概述](ipcji-zhi/gai-shu.md)
