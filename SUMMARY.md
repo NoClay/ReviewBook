@@ -71,17 +71,17 @@
 ## 设计模式
 
 * [MVC与MVP](设计模式/MVC与MVP.md)
-* [面向对象六大原则](she-ji-mo-shi/mian-xiang-dui-xiang-liu-da-yuan-ze.md)
-* [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
-* [Builder模式](she-ji-mo-shi/buildermo-shi.md)
-* [代理模式](she-ji-mo-shi/dai-li-mo-shi.md)
-* [原型模式](she-ji-mo-shi/yuan-xing-mo-shi.md)
-* [外观模式](she-ji-mo-shi/wai-guan-mo-shi.md)
-* [策略模式](she-ji-mo-shi/ce-lve-mo-shi.md)
-* [简单工厂](she-ji-mo-shi/jian-dan-gong-chang.md)
-* [观察者模式](she-ji-mo-shi/guan-cha-zhe-mo-shi.md)
+* [面向对象六大原则](设计模式/面向对象六大原则.md)
+* [单例模式](设计模式/单例模式.md)
+* [Builder模式](设计模式/Builder模式.md)
+* [代理模式](设计模式/代理模式.md)
+* [原型模式](设计模式/原型模式.md)
+* [外观模式](设计模式/外观模式.md)
+* [策略模式](设计模式/策略模式.md)
+* [简单工厂](设计模式/简单工厂模式.md)
+* [观察者模式](设计模式/观察者模式.md)
 * [职责链模式](设计模式/职责链模式.md)
-* [适配器模式](she-ji-mo-shi/shi-pei-qi-mo-shi.md)
+* [适配器模式](设计模式/适配器模式.md)
 
 ## 计算机网络
 
