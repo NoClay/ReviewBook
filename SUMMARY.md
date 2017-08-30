@@ -38,6 +38,7 @@
 * [线程模型](Android/Android中的线程模型/IntentService.md)
   * [AsyncTask详解](Android/Android中的线程模型/AsyncTask详解.md)
   * [线程池](Android/Android中的线程模型/线程池.md)
+  * [HandlerThread](Android/Android中的线程模型/HandlerThread.md)
 * [RxJava](Android/RxJava/RxJava.md)
   * [RxJava的背压问题](Android/RxJava/背压问题.md)
 * [热修复](Android/热修复.md)
