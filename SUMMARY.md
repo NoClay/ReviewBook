@@ -56,8 +56,6 @@
 * [集合](javabu-fen/ji-he.md)
   * [ArrayList，Vector，LinkedList的对比](javabu-fen/arraylistvectorlinkedlistde-dui-bi.md)
   * [HashMap详解](javabu-fen/hashmapxiang-jie.md)
-  * [HashMap--Java篇](javabu-fen/hashmapxiang-jie/hashmap-javapian.md)
-  * [HashMap--Android篇](javabu-fen/hashmapxiang-jie/hashmap-androidpian.md)
 * [类加载机制](javabu-fen/lei-jia-zai-ji-zhi.md)
   * [装载（load）](javabu-fen/lei-jia-zai-ji-zhi/zhuang-zai-load.md)
   * [链接（link）](javabu-fen/lei-jia-zai-ji-zhi/lian-jie-link.md)
