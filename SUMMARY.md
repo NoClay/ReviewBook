@@ -20,7 +20,7 @@
   * [序列化](Android/IPC进程间通信/序列化.md)
   * [使用Bundle](Android/IPC进程间通信/使用Bundle.md)
   * [使用文件](Android/IPC进程间通信/使用文件.md)
-  * [使用Messenger](ipcji-zhi/shi-yong-messenger.md)
+  * [使用Messenger](Android/IPC进程间通信/使用Messenger.md)
   * [使用AIDL](ipcji-zhi/shi-yong-aidl.md)
 * [ListView和RecyclerView](listviewde-you-hua.md)
 * [View事件分发](viewshi-jian-fen-fa.md)
