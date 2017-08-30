@@ -2,7 +2,7 @@
 
 ## 前言
 
-* [简介](SUMMARY.md)
+* [简介](README.md)
 
 ## Android部分
 
