@@ -54,7 +54,7 @@
 * [抽象类和接口](Java/抽象类和接口.md)
 * [Servlet（Server与Applet\)](Java/Servlet.md)
 * [XML解析](Java/Xml的解析.md)
-* [集合](Java/集合.md)
+* [集合](Java/集合/集合.md)
   * [ArrayList，Vector，LinkedList的对比](Java/arraylistvectorlinkedlistde-dui-bi.md)
   * [HashMap详解](Java/hashmapxiang-jie.md)
 * [类加载机制](Java/类加载机制.md)
