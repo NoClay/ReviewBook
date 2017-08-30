@@ -46,7 +46,7 @@
 
 ## Java部分
 
-* [Java基础知识](Java/final-finally-finalizede-qu-bie.md)
+* [Java基础知识](Java/final、finally、finalize的区别.md)
 * [垃圾回收机制](Java/垃圾回收机制/垃圾回收机制.md)
   * [对象已死吗？](Java/垃圾回收机制/dui-xiang-yi-si-ma.md)
   * [HotSpot的算法实现](Java/垃圾回收机制/hotspotde-suan-fa-shi-xian.md)
