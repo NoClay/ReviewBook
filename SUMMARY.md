@@ -70,7 +70,7 @@
 
 ## 设计模式
 
-* [MVC与MVP](she-ji-mo-shi/mvcyu-mvp.md)
+* [MVC与MVP](设计模式/MVC与MVP.md)
 * [面向对象六大原则](she-ji-mo-shi/mian-xiang-dui-xiang-liu-da-yuan-ze.md)
 * [单例模式](she-ji-mo-shi/dan-li-mo-shi.md)
 * [Builder模式](she-ji-mo-shi/buildermo-shi.md)
