@@ -48,7 +48,8 @@ redirect就是服务端根据逻辑，发送一个状态码，高速浏览器重
 
       3. 路由器缓存
 
-      4. ISP DNS 缓存![](http://www.chinahtml.com/d/file//2010/07-12/image13.png)
+      4. ISP DNS 缓存
+      ![](http://www.chinahtml.com/d/file//2010/07-12/image13.png)
 
    2. 浏览器给服务器发送一个HTTP请求
 
