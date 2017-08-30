@@ -14,7 +14,7 @@
 * [Android的内存泄漏总结](Android/Android的内存泄漏总结.md)
 * [如何解决WebView的内存泄漏](Android/如何解决WebView的内存泄漏.md)
 * [Android性能优化](Android/Android的性能优化.md)
-* [IPC机制](Android/IPC进程间通信/IPC机制.md)
+* [IPC通信](Android/IPC进程间通信/IPC机制.md)
   * [概述](Android/IPC进程间通信/概述.md)
   * [Binder](Android/IPC进程间通信/Binder.md)
   * [序列化](Android/IPC进程间通信/序列化.md)
