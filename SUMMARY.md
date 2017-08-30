@@ -16,7 +16,7 @@
 * [Android性能优化](Android/Android的性能优化.md)
 * [IPC机制](Android/IPC进程间通信/IPC机制.md)
   * [概述](Android/IPC进程间通信/概述.md)
-  * [Binder](binder.md)
+  * [Binder](Android/IPC进程间通信/Binder.md)
   * [序列化](ipcji-zhi/xu-lie-hua.md)
   * [使用Bundle](ipcji-zhi/shi-yong-bundle.md)
   * [使用文件](ipcji-zhi/shi-yong-wen-jian.md)
