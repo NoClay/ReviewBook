@@ -29,7 +29,7 @@
   * [View的事件分发](Android/View的事件分发机制/View的事件分发.md)
   * [View的滑动冲突](Android/View的事件分发机制/View的滑动冲突.md)
 * [View工作原理](Android/View的工作原理.md)
-* [Android的消息机制](androidde-xiao-xi-ji-zhi.md)
+* [Android的消息机制](Android/Android消息机制/Android消息机制.md)
   * [ThreadLocal](androidde-xiao-xi-ji-zhi/threadlocal.md)
   * [消息队列的工作原理](androidde-xiao-xi-ji-zhi/xiao-xi-dui-lie-de-gong-zuo-yuan-li.md)
   * [Looper的工作原理](androidde-xiao-xi-ji-zhi/looperde-gong-zuo-yuan-li.md)
