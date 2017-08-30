@@ -6,7 +6,7 @@
 
 ## Android部分
 
-* [零碎知识点](ling-sui-zhi-shi-dian.md)
+* [零碎知识点](Android/零碎知识点.md)
 * [Activity的生命周期和启动模式](activity-de-sheng-ming-zhou-qi.md)
 * [Fragment的生命周期](fragmentde-sheng-ming-zhou-qi.md)
 * [Service的生命周期](servicede-sheng-ming-zhou-qi.md)
