@@ -33,7 +33,7 @@
   * [ThreadLocal](Android/Android消息机制/ThreadLocal.md)
   * [消息队列的工作原理](Android/Android消息机制/消息队列的工作原理.md)
   * [Looper的工作原理](Android/Android消息机制/Looper的工作原理.md)
-  * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
+  * [Handler的工作原理](Android/Android消息机制/Handler的工作原理.md)
 * [RemoteView](Android/RemoteView.md)
 * [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
   * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
