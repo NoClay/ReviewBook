@@ -57,7 +57,7 @@
 * [集合](Java/ji-he.md)
   * [ArrayList，Vector，LinkedList的对比](Java/arraylistvectorlinkedlistde-dui-bi.md)
   * [HashMap详解](Java/hashmapxiang-jie.md)
-* [类加载机制](Java/lei-jia-zai-ji-zhi.md)
+* [类加载机制](Java/类加载机制.md)
   * [装载（load）](Java/lei-jia-zai-ji-zhi/zhuang-zai-load.md)
   * [链接（link）](Java/lei-jia-zai-ji-zhi/lian-jie-link.md)
   * [初始化](Java/lei-jia-zai-ji-zhi/chu-shi-hua.md)
