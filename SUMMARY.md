@@ -62,7 +62,7 @@
   * [链接（link）](Java/lei-jia-zai-ji-zhi/lian-jie-link.md)
   * [初始化](Java/lei-jia-zai-ji-zhi/chu-shi-hua.md)
 * [线程池](threadpool.md)
-* [线程部分](Java/xian-cheng-bu-fen.md)
+* [线程部分](Java/线程部分.md)
 
 ## 操作系统
 
