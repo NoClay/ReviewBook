@@ -22,7 +22,7 @@
   * [使用文件](Android/IPC进程间通信/使用文件.md)
   * [使用Messenger](Android/IPC进程间通信/使用Messenger.md)
   * [使用AIDL](Android/IPC进程间通信/使用Aidl.md)
-* [ListView和RecyclerView](listviewde-you-hua.md)
+* [ListView和RecyclerView](Android/ListView和RecycleView.md)
 * [View事件分发](viewshi-jian-fen-fa.md)
   * [View的滑动](viewshi-jian-fen-fa/viewde-ji-chu-zhi-shi.md)
   * [View的弹性滑动](viewshi-jian-fen-fa/viewde-dan-xing-hua-dong.md)
