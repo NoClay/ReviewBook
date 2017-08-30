@@ -42,6 +42,7 @@
   * [RxJava的背压问题](rxjava/rxjavade-bei-ya-wen-ti.md)
 * [热修复](re-xiu-fu.md)
 * [响应式编程](xiang-ying-shi-bian-cheng.md)
+* [图片加载库](图片加载库原理.md)
 
 ## Java部分
 
