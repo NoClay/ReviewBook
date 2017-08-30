@@ -17,7 +17,7 @@
 * [IPC机制](Android/IPC进程间通信/IPC机制.md)
   * [概述](Android/IPC进程间通信/概述.md)
   * [Binder](Android/IPC进程间通信/Binder.md)
-  * [序列化](ipcji-zhi/xu-lie-hua.md)
+  * [序列化](Android/IPC进程间通信/序列化.md)
   * [使用Bundle](ipcji-zhi/shi-yong-bundle.md)
   * [使用文件](ipcji-zhi/shi-yong-wen-jian.md)
   * [使用Messenger](ipcji-zhi/shi-yong-messenger.md)
