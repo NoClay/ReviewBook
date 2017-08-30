@@ -2,7 +2,9 @@
 
 ClassLoader就是用来装载的。通过指定的className，找到二进制码，生成Class实例，放到JVM中。ClassLoader从顶向下分为 Bootstrap ClassLoader、Extension ClassLoader、System ClassLoader以及User-Defined ClassLoader（分叉，可以多个）。如下图。![](http://www.ibm.com/developerworks/java/library/j-dclp1/clhierarchy.gif)
 
-这是Tomcat装载器的例子：![](http://p.blog.csdn.net/images/p_blog_csdn_net/sunjavaduke/1811cafdfc034ebe9acb2269baf7e061.png)
+![](http://storage1.imgchr.com/ZuyTO.png)
+
+这是Tomcat装载器的例子：
 
 装载过程从源码清析可见：
 
