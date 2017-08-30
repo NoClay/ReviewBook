@@ -90,15 +90,15 @@
 ## 算法
 
 * [排序算法](算法/排序算法/排序算法总结.md)
-  * [插入排序](suan-fa/pai-xu-suan-fa/cha-ru-pai-xu.md)
-  * [冒泡排序](suan-fa/pai-xu-suan-fa/mao-pao-pai-xu.md)
-  * [快速排序](suan-fa/pai-xu-suan-fa/kuai-su-pai-xu.md)
-  * [选择排序](suan-fa/pai-xu-suan-fa/xuan-ze-pai-xu.md)
-  * [堆排序](suan-fa/pai-xu-suan-fa/dui-pai-xu.md)
-  * [归并排序](suan-fa/pai-xu-suan-fa/gui-bing-pai-xu.md)
-  * [计数排序](suan-fa/pai-xu-suan-fa/ji-shu-pai-xu.md)
-  * [基数排序](suan-fa/pai-xu-suan-fa/ji_shu_pai_xu01.md)
-  * [木桶排序](suan-fa/pai-xu-suan-fa/mu-tong-pai-xu.md)
+  * [插入排序](算法/排序算法/cha-ru-pai-xu.md)
+  * [冒泡排序](算法/排序算法/mao-pao-pai-xu.md)
+  * [快速排序](算法/排序算法/kuai-su-pai-xu.md)
+  * [选择排序](算法/排序算法/xuan-ze-pai-xu.md)
+  * [堆排序](算法/排序算法/dui-pai-xu.md)
+  * [归并排序](算法/排序算法/gui-bing-pai-xu.md)
+  * [计数排序](算法/排序算法/ji-shu-pai-xu.md)
+  * [基数排序](算法/排序算法/ji_shu_pai_xu01.md)
+  * [木桶排序](算法/排序算法/mu-tong-pai-xu.md)
 
 ## 数据结构
 
