@@ -38,7 +38,7 @@
 * [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
   * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
   * [线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
-* [RxJava](rxjava.md)
+* [RxJava](Android/RxJava.md)
   * [RxJava的背压问题](rxjava/rxjavade-bei-ya-wen-ti.md)
 * [热修复](Android/热修复.md)
 * [响应式编程](Android/响应式编程.md)
