@@ -89,7 +89,7 @@
 
 ## 算法
 
-* [排序算法](suan-fa/pai-xu-suan-fa.md)
+* [排序算法](算法/排序算法总结.md)
   * [插入排序](suan-fa/pai-xu-suan-fa/cha-ru-pai-xu.md)
   * [冒泡排序](suan-fa/pai-xu-suan-fa/mao-pao-pai-xu.md)
   * [快速排序](suan-fa/pai-xu-suan-fa/kuai-su-pai-xu.md)
