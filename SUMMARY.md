@@ -51,7 +51,7 @@
   * [对象已死吗？](Java/垃圾回收机制/dui-xiang-yi-si-ma.md)
   * [HotSpot的算法实现](Java/垃圾回收机制/hotspotde-suan-fa-shi-xian.md)
   * [内存分配与回收策略](Java/垃圾回收机制/nei-cun-fen-pei-yu-hui-shou-ce-lve.md)
-* [抽象类和接口](Java/chou-xiang-lei-he-jie-kou.md)
+* [抽象类和接口](Java/抽象类和接口.md)
 * [Servlet（Server与Applet\)](Java/servlet.md)
 * [XML解析](Java/xmljie-xi.md)
 * [集合](Java/ji-he.md)
