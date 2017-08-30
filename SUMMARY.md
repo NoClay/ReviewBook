@@ -39,7 +39,7 @@
   * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
   * [线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
 * [RxJava](Android/RxJava/RxJava.md)
-  * [RxJava的背压问题](rxjava/rxjavade-bei-ya-wen-ti.md)
+  * [RxJava的背压问题](Android/RxJava/背压问题.md)
 * [热修复](Android/热修复.md)
 * [响应式编程](Android/响应式编程.md)
 * [图片加载库](Android/图片加载库原理.md)
