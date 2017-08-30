@@ -15,7 +15,7 @@
 * [如何解决WebView的内存泄漏](Android/如何解决WebView的内存泄漏.md)
 * [Android性能优化](Android/Android的性能优化.md)
 * [IPC机制](Android/IPC进程间通信/IPC机制.md)
-  * [概述](ipcji-zhi/gai-shu.md)
+  * [概述](Android/IPC进程间通信/概述.md)
   * [Binder](binder.md)
   * [序列化](ipcji-zhi/xu-lie-hua.md)
   * [使用Bundle](ipcji-zhi/shi-yong-bundle.md)
