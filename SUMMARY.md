@@ -7,9 +7,9 @@
 ## Android部分
 
 * [零碎知识点](Android/零碎知识点.md)
-* [Activity的生命周期和启动模式](Android/生命周期/Activity的生命周期.md.md)
-* [Fragment的生命周期](Android/生命周期/Fragment的生命周期.md)
-* [Service的生命周期](Android/生命周期/Service的生命周期.md)
+* [Activity的生命周期和启动模式](Android/Activity的生命周期.md.md)
+* [Fragment的生命周期](Android/Fragment的生命周期.md)
+* [Service的生命周期](Android/Service的生命周期.md)
 * [Broadcast](broadcast.md)
 * [Android的内存泄漏总结](androidde-nei-cun-xie-lou-zong-jie.md)
 * [如何解决WebView的内存泄漏](ru-he-jie-jue-webview-de-nei-cun-xie-lou.md)
