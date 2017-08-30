@@ -56,7 +56,7 @@
 * [XML解析](Java/Xml的解析.md)
 * [集合](Java/集合/集合.md)
   * [HashMap详解](Java/集合/HashMap的详解.md)
-* [类加载机制](Java/类加载机制/类加载机制.md)
+* [类加载机制](Java/类加载机制.md)
 * [线程池](Java/线程池.md)
 * [线程部分](Java/线程部分.md)
 
