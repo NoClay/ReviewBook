@@ -34,7 +34,7 @@
   * [消息队列的工作原理](androidde-xiao-xi-ji-zhi/xiao-xi-dui-lie-de-gong-zuo-yuan-li.md)
   * [Looper的工作原理](androidde-xiao-xi-ji-zhi/looperde-gong-zuo-yuan-li.md)
   * [Handler的工作原理](androidde-xiao-xi-ji-zhi/handlerde-gong-zuo-yuan-li.md)
-* [RemoteView](remoteview.md)
+* [RemoteView](Android/RemoteView.md)
 * [线程形态](androidzhong-de-xian-cheng-he-xian-cheng-chi/handlerthread.md)
   * [AsyncTask详解](androidzhong-de-xian-cheng-he-xian-cheng-chi/asynctask_xiang_jie.md)
   * [线程池](androidzhong-de-xian-cheng-he-xian-cheng-chi/androdizhong-de-xian-cheng-chi.md)
