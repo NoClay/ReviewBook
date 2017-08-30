@@ -53,7 +53,7 @@
   * [内存分配与回收策略](Java/垃圾回收机制/nei-cun-fen-pei-yu-hui-shou-ce-lve.md)
 * [抽象类和接口](Java/抽象类和接口.md)
 * [Servlet（Server与Applet\)](Java/Servlet.md)
-* [XML解析](Java/xmljie-xi.md)
+* [XML解析](Java/Xml的解析.md)
 * [集合](Java/ji-he.md)
   * [ArrayList，Vector，LinkedList的对比](Java/arraylistvectorlinkedlistde-dui-bi.md)
   * [HashMap详解](Java/hashmapxiang-jie.md)
