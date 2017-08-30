@@ -56,7 +56,7 @@
 * [XML解析](Java/Xml的解析.md)
 * [集合](Java/集合/集合.md)
   * [ArrayList，Vector，LinkedList的对比](Java/arraylistvectorlinkedlistde-dui-bi.md)
-  * [HashMap详解](Java/hashmapxiang-jie.md)
+  * [HashMap详解](Java/集合/HashMap的详解.md)
 * [类加载机制](Java/类加载机制.md)
   * [装载（load）](Java/lei-jia-zai-ji-zhi/zhuang-zai-load.md)
   * [链接（link）](Java/lei-jia-zai-ji-zhi/lian-jie-link.md)
