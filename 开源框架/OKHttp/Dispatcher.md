@@ -1,4 +1,3 @@
-[1](http://www.jianshu.com/p/1e44420e2fd4)
 Dispatcher的作用是维护请求的状态，并维护一个线程池，用于执行请求。
 
 ### 遗留的疑问
