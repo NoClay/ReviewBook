@@ -58,8 +58,9 @@ When creating a connection the client has many options:
 > * HTTP proxy: a proxy server may be explicitly configured for the client. Otherwise the {@linkplain java.net.ProxySelector proxy selector} is used. It may return multiple proxies to attempt.
 > * IP address: whether connecting directly to an origin server or a proxy, opening a socket requires an IP address. The DNS server may return multiple IP addresses to attempt.
 > * TLS configuration: which cipher suites and TLS versions to attempt with the HTTPS connection.
-> HTTP代理：可以为客户端显示的配置代理服务器，否则将会使用{@linkplain java.net.ProxySelector proxy selector}，它可能返回多个代理选项进行尝试。
-> IP地址：
+> * HTTP代理：可以为客户端显示的配置代理服务器，否则将会使用{@linkplain java.net.ProxySelector proxy selector}，它可能返回多个代理选项进行尝试。
+> * IP地址：无论是直接连接到原始服务器还是代理服务器，打开套接字都需要一个IP地址。 DNS服务器可能会返回多个IP地址尝试。
+> * TLS配置：密码套件和TLS版本尝试使用HTTPS连接。
 
 Each route is a specific selection of these options.  
 其实就是对地址的一个封装类，但是很重要。
@@ -525,7 +526,7 @@ Response getResponse(Request request, boolean forWebSocket) throws IOException {
 > 1、HttpEngine.recover\(\)的实现方式是通过检测RouteSelector是否还有更多的routes可以尝试连接，同时会去检查是否可以恢复等等的一系列判断。如果可以会为重新连接重新创建一份新的HttpEngine，同时把相应的链路信息传递过去；  
 > 2、当恢复后的HttpEngine不为空，那么替换当前Call中的当前HttpEngine，执行while的continue，发起下一次的请求；  
 > 3、再重点强调一点HttpEngine.sendRequest\(\)。这里之前分析过会触发connect\(\)方法，在该方法中会通过RouteSelector.next\(\)再去找当前适合的Route。多说一点，next\(\)方法会传递到nextInetSocketAddress\(\)方法，而此处一段重要的执行代码就是network.resolveInetAddresses\(socketHost\)。这个地方最重要的是在Network这个接口中有一个对该接口的DEFAULT的实现域，而该方法通过工具类InetAddress.getAllByName\(host\)来完成对数组类的地址解析。  
-> 所以，多地址可以采用[“\[http://aaaaa","https://bbbbbb"\]的方式来配置。](http://aaaaa"%2C"https//bbbbbb"]的方式来配置。)
+> 所以，多地址可以采用\[“\[[http://aaaaa","https://bbbbbb"\]的方式来配置。\]\(http://aaaaa"%2C"https//bbbbbb"\]的方式来配置。](http://aaaaa","https://bbbbbb"]的方式来配置。]%28http://aaaaa"%2C"https//bbbbbb"]的方式来配置。)\)
 
 \#\#Gzip的使用方式  
 在源码引导RequestBodyCompression.java中我们可以看到gzip的使用身影。通过拦截器对Request 的body进行gzip的压缩，来减少流量的传输。  
