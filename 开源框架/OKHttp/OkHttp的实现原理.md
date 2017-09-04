@@ -78,68 +78,119 @@ Supported on OpenJDK 7 and 8 \(via the JettyALPN-boot library\).
 
 **3.Connnection.java**  
 The sockets and streams of an HTTP, HTTPS, or HTTPS+SPDY connection. May be used for multiple HTTP request/response exchanges. Connections may be direct to the origin server or via a proxy.  
+
+译：HTTP，HTTPS或HTTPS + SPDY连接的套接字和流。 可用于多个HTTP请求/响应交换。 连接可能直接到源服务器或通过代理。
+
 Typically instances of this class are created, connected and exercised automatically by the HTTP client. Applications may use this class to monitor HTTP connections as members of a ConnectionPool.  
+
+译：通常该类的实例由HTTP客户端自动创建，连接和运行。 应用程序可以使用此类来监视作为ConnectionPool成员的HTTP连接。
+
 Do not confuse this class with the misnamed HttpURLConnection, which isn’t so much a connection as a single request/response exchange.  
+
+译：不要将这个类与HttpURLConnection混淆，这不是一个单一的请求/响应交换的连接。
+
 Modern TLS  
 There are tradeoffs when selecting which options to include when negotiating a secure connection to a remote host. Newer TLS options are quite useful:
 
+译：现代TLS，当选择在协商与远程主机的安全连接时要包括哪些选项时，有权衡。 较新的TLS选项非常有用：
+
 > * Server Name Indication \(SNI\) enables one IP address to negotiate secure connections for multiple domain names.
+> * SNI有效：一个IP地址用来协调多个域名的安全连接
 > * Application Layer Protocol Negotiation \(ALPN\) enables the HTTPS port \(443\) to be used for different HTTP and SPDY protocols.
+> * ALPN有效：443HTTPS端口可用于不同的HTTP和SPDY协议
 
 Unfortunately, older HTTPS servers refuse to connect when such options are presented. Rather than avoiding these options entirely, this class allows a connection to be attempted with modern options and then retried without them should the attempt fail.
+
+译：不幸的是，当提供这些选项时，较旧的HTTPS服务器拒绝连接。 为了不完全避免这些选项，这个类允许使用现代选项尝试连接，并且具有失败重试机制。
 
 **4.ConnnectionPool.java**  
 Manages reuse of HTTP and SPDY connections for reduced network latency. HTTP requests that share the same Address may share a Connection. This class implements the policy of which connections to keep open for future use.  
 The system-wide default uses system properties for tuning parameters:
 
+译：管理HTTP和SPDY连接的重用，以减少网络延迟。 共享相同地址的HTTP请求可能共享一个连接。 该类实现了保持开放以供将来使用的连接的策略。系统默认使用系统属性调整参数：
+
 > * http.keepAlive true if HTTP and SPDY connections should be pooled at all. Default is true.
+> * 如果Http和SPDY连接应该连接（汇集）在一起，则http.keepAlive属性应为true，默认为true
 > * http.maxConnections maximum number of idle connections to each to keep in the pool. Default is 5.
+> * http.maxConnections 是连接池中保留的最大空闲连接数，默认为5
 > * http.keepAliveDuration Time in milliseconds to keep the connection alive in the pool before closing it. Default is 5 minutes. This property isn’t used by HttpURLConnection.
+> *  http.keepAliveDuration在关闭它之前保持连接在池中的时间（以毫秒为单位）。 默认为5分钟。 HttpURLConnection不使用此属性。
 
 The default instance doesn’t adjust its configuration as system properties are changed. This assumes that the applications that set these parameters do so before making HTTP connections, and that this class is initialized lazily.
+
+默认实例不会调整随着系统属性的更改而更改。 这假设在进行HTTP连接之前设置这些参数的应用程序是这样做的，并且该类被懒惰地初始化。
 
 **5.Request.java**  
 An HTTP request. Instances of this class are immutable if their body is null or itself immutable.\(Builder模式\)
 
+译：HTTP请求，如果它们的主体是空的或者它本身是不可变的，这个类的实例是不可变的（Builder模式）
+
 **6.Response.java**  
 An HTTP response. Instances of this class are not immutable: the response body is a one-shot value that may be consumed **only once**. All other properties are immutable.
 
+译：HTTP响应。 这个类的实例不是不可变的：响应体是一个可以只用一次**的一次性值。 所有其他属性都是不可变的。
+
 **7.Call.java**  
 A call is a request that has been prepared for execution. A call can be canceled. As this object represents a single request/response pair \(stream\), **it cannot be executed twice**.
+
+译：一个Call就是一个已经准备执行的请求，它可以被取消，这个对象表示单独的请求或者响应对，不能被执行两次以上。
 
 **8.Dispatcher.java**  
 Policy on when async requests are executed.
 
 Each dispatcher uses an **ExecutorService** to run calls internally. If you supply your own executor, it should be able to run configured maximum number of calls concurrently.
 
+译：执行异步请求时的策略，每个调度程序使用ExecutorService来内部运行Call，如果你自定义自己的执行器，它应该能够保证同时运行已配置的最大并发Call数。
+
 **9.HttpEngine.java**  
 Handles **a single HTTP request/response pair**. Each HTTP engine follows this  
 lifecycle:
 
+译：处理单个Http请求/响应对，每一个Http引擎都遵循这个生命周期：
+
 > * It is created.
+> * 创建
 > * The HTTP request message is sent with sendRequest\(\). Once the request is sent it is an error to modify the request headers. After sendRequest\(\) has been called the request body can be written to if it exists.
+> * 使用sendRequest发送一个Http请求信息，一旦这个请求被发送，修改这个请求的header将会是一个error，在sendRequest被调用之后，如果请求体存在则可以重新写入。
 > * The HTTP response message is read with readResponse\(\). After the response has been read the response headers and body can be read. All responses have a response body input stream, though in some instances this stream is empty.
+> * 使用readResponse 读取HTTP响应消息。 响应已被读取后，可以读取响应标题和正文。 所有响应都有响应体输入流，但在某些情况下，此流为空。
 
 The request and response may be served by the HTTP response **cache**, by the **network**, or by **both** in the event of a conditional GET.
+
+译：请求和响应可以由http响应缓存，或者网络，或者两者都有，在Get情况下提供服务。
 
 **10.Internal.java**  
 Escalate internal APIs in {@code com.squareup.okhttp} so they can be used from OkHttp’s implementation packages. The only implementation of this interface is in {@link com.squareup.okhttp.OkHttpClient}.
 
+译：在{@code com.squareup.okhttp}中升级内部API，以便它们可以从OkHttp的实现包中使用。 此接口的唯一实现是在{@link com.squareup.okhttp.OkHttpClient}中。
+
 **11.Cache.java**  
 Caches HTTP and HTTPS responses to the filesystem so they may be reused, saving time and bandwidth.
+
+缓存HTTP和HTTPS对文件系统的响应，从而可以重用，从而节省时间和带宽。
 
 **Cache Optimization**  
 To measure cache effectiveness, this class tracks three statistics:
 
+译：为了衡量缓存的有效性，该类跟踪三个统计信息：
+
 > * Request Count: the number of HTTP requests issued since this cache was created.
+> * 请求计数：创建此缓存后发出的Http请求数
 > * Network Count: the number of those requests that required network use.
+> * 网络计数：需要网络使用的请求数
 > * Hit Count: the number of those requests whose responses were served by the cache.
+> * 命中计数：由缓存提供响应的请求数
 
 Sometimes a request will result in a conditional cache hit. If the cache contains a stale copy of the response, the client will issue a conditional GET. The server will then send either the updated response if it has changed, or a short ‘not modified’ response if the client’s copy is still valid. Such responses increment both the network count and hit count.  
 The best way to improve the cache hit rate is by configuring the web server to return cacheable responses. Although this client honors all [HTTP/1.1 \(RFC 2068\)](http://www.ietf.org/rfc/rfc2616.txt) cache headers, it doesn’t cache partial responses.
 
+译：有时，请求将导致条件缓存命中。 如果缓存包含响应的陈旧副本，则客户端将发出条件GET。 如果客户端的副本仍然有效，服务器将发送更新的响应（如果已更改）或简短的“未修改”响应。 此类响应会增加网络计数和命中次数。
+提高缓存命中率的最佳方法是配置Web服务器以返回可缓存的响应。 虽然这个客户端尊重所有[HTTP / 1.1 \（RFC 2068 \）]（http://www.ietf.org/rfc/rfc2616.txt）缓存头，但它不缓存部分响应。
+
 **Force a Network Response**  
 In some situations, such as after a user clicks a ‘refresh’ button, it may be necessary to skip the cache, and fetch data directly from the server. To force a full refresh, add the {@code no-cache} directive:
+
+译：在某些情况下，例如在用户单击“刷新”按钮之后，可能需要跳过缓存并直接从服务器获取数据。 要强制完全刷新，请添加{@code no-cache}指令：
 
 ```
 connection.addRequestProperty("Cache-Control", "no-cache")
@@ -147,12 +198,16 @@ connection.addRequestProperty("Cache-Control", "no-cache")
 
 If it is only necessary to force a cached response to be validated by the server, use the more efficient {@code max-age=0} instead:
 
+译：如果仅需要强制缓存的响应由服务器验证，则使用更有效的{@code max-age = 0}：
+
 ```
 connection.addRequestProperty("Cache-Control", "max-age=0");
 ```
 
 **Force a Cache Response**  
 Sometimes you’ll want to show resources if they are available immediately, but not otherwise. This can be used so your application can show something while waiting for the latest data to be downloaded. To restrict a request to locally-cached resources, add the {@code only-if-cached} directive:
+
+译：有时，如果可以的话，你想立即显示资源。 这也可以，但是你的应用程序必须在等待最新的数据下载时显示一些东西。 要限制对本地缓存资源的请求，请添加{@code only-if-cached}指令：
 
 ```
 try {
@@ -166,6 +221,8 @@ try {
 
 This technique works even better in situations where a stale response is better than no response. To permit stale cached responses, use the {@code max-stale} directive with the maximum staleness in seconds:
 
+译：这种技术在陈旧的反应比没有反应更好的情况下运行得更好。 要允许陈旧的缓存响应，请使用{@code max-stale}指令，单位为秒：
+
 ```
 int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
 connection.addRequestProperty("Cache-Control", "max-stale=" + maxStale);
@@ -174,13 +231,19 @@ connection.addRequestProperty("Cache-Control", "max-stale=" + maxStale);
 **12.OkHttpClient.java**  
 Configures and creates HTTP connections. Most applications can use a single OkHttpClient for all of their HTTP requests - benefiting from a shared response cache, thread pool, connection re-use, etc.
 
+译：配置和创建HTTP连接。 大多数应用程序可以使用单个OkHttpClient来处理所有的HTTP请求 - 受益于共享响应缓存，线程池，连接重用等。
+
 Instances of OkHttpClient are intended to be fully configured before they’re shared - once shared they should be treated as immutable and can safely be used to concurrently open new connections. If required, threads can call **clone** to make a shallow copy of the OkHttpClient that can be safely modified with further configuration changes.
 
-\#\#请求流程图  
+译：OkHttpClient的实例旨在在共享之前完全配置 - 一旦共享，它们应被视为不可变的，并且可以安全地用于同时打开新的连接。 如果需要，线程可以调用** clone **来创建OkHttpClient的浅层副本，可以通过进一步的配置更改安全地进行修改。
+
+# 请求流程图  
+
 下面是关于OKHttp的请求流程图  
 [![OKHttp的请求流程图](http://frodoking.github.io/img/android/okhttp_request_process.png)](http://frodoking.github.io/img/android/okhttp_request_process.png)
 
-\#\#详细类关系图  
+# 详细类关系图  
+
 由于整个设计类图比较大，所以本人将从核心入口client、cache、interceptor、网络配置、连接池、平台适配性…这些方面来逐一进行分析源代码的设计。  
 下面是核心入口OkHttpClient的类设计图  
 [![OkHttpClient的类设计图](http://frodoking.github.io/img/android/okhttp_okhttpclient_class.png)](http://frodoking.github.io/img/android/okhttp_okhttpclient_class.png)  
@@ -190,7 +253,8 @@ Instances of OkHttpClient are intended to be fully configured before they’re s
 
 在接下来的几个Section中将会结合子模块核心类的设计，从该框架的整体特性上来分析这些模块是如何实现各自功能。以及各个模块之间是如何相互配合来完成客户端各种复杂请求。
 
-\#\#同步与异步的实现  
+# 同步与异步的实现  
+
 在发起请求时，整个框架主要通过Call来封装每一次的请求。同时Call持有OkHttpClient和一份HttpEngine。而每一次的同步或者异步请求都会有Dispatcher的参与，不同的是：
 
 > * 同步
@@ -201,9 +265,10 @@ Instances of OkHttpClient are intended to be fully configured before they’re s
 
 接下来继续讲讲Call的getResponseWithInterceptorChain（）方法，这里边重点说一下拦截器链条的实现以及作用。
 
-\#\#拦截器有什么作用  
+#拦截器有什么作用  
+
 先来看看Interceptor本身的文档解释：观察，修改以及可能短路的请求输出和响应请求的回来。通常情况下拦截器用来添加，移除或者转换请求或者回应的头部信息。  
-拦截器接口中有intercept\(Chain chain\)方法，同时返回Response。所谓拦截器更像是AOP设计的一种实现。下面来看一个okhttp源码中的一个引导例子来说明拦截器的作用。
+拦截器接口中有intercept\(Chain chain\)方法，同时返回Response。所谓拦截器更像是AOP（面向切面编程）设计的一种实现。下面来看一个okhttp源码中的一个引导例子来说明拦截器的作用。
 
 ```
 public final class LoggingInterceptors {
@@ -274,7 +339,8 @@ OkHttp-Received-Millis: 1426745490198
 
 在这里再多说一下关于Call这个类的作用，在Call中持有一个HttpEngine。每一个不同的Call都有自己独立的HttpEngine。在HttpEngine中主要是各种链路和地址的选择，还有一个Transport比较重要
 
-\#\#缓存策略  
+#缓存策略  
+
 在OkHttpClient内部暴露了有Cache和InternalCache。而InternalCache不应该手动去创建，所以作为开发使用者来说，一般用法如下：
 
 ```
@@ -454,7 +520,8 @@ public void readResponse() throws IOException {
     }
 ```
 
-\#\#HTTP连接的实现方式（说说连接池）  
+#HTTP连接的实现方式（说说连接池）  
+
 外部网络请求的入口都是通过Transport接口来完成。该类采用了桥接模式将HttpEngine和HttpConnection来连接起来。因为HttpEngine只是一个逻辑处理器，同时它也充当了请求配置的提供引擎，而HttpConnection是对底层处理Connection的封装。
 
 OK现在重点转移到HttpConnection（一个用于发送HTTP/1.1信息的socket连接）这里。主要有如下的生命周期：
@@ -483,7 +550,8 @@ OK现在重点转移到HttpConnection（一个用于发送HTTP/1.1信息的socke
 
 其实连接池这里还是有很多值得细看的地方，由于时间有限，到这里已经花了很多时间搞这事儿了。。。
 
-\#\#重连机制  
+#重连机制  
+
 这里重点说说连接链路的相关事情。说说自动重连到底是如何实现的。  
 照样先来看看下面的这个自动重连机制的实现方式时序图  
 [![OKHttp重连执行时序图](http://frodoking.github.io/img/android/okhttp_connection_reset.png)](http://frodoking.github.io/img/android/okhttp_connection_reset.png)
@@ -528,20 +596,23 @@ Response getResponse(Request request, boolean forWebSocket) throws IOException {
 > 3、再重点强调一点HttpEngine.sendRequest\(\)。这里之前分析过会触发connect\(\)方法，在该方法中会通过RouteSelector.next\(\)再去找当前适合的Route。多说一点，next\(\)方法会传递到nextInetSocketAddress\(\)方法，而此处一段重要的执行代码就是network.resolveInetAddresses\(socketHost\)。这个地方最重要的是在Network这个接口中有一个对该接口的DEFAULT的实现域，而该方法通过工具类InetAddress.getAllByName\(host\)来完成对数组类的地址解析。  
 > 所以，多地址可以采用\[“\[[http://aaaaa","https://bbbbbb"\]的方式来配置。\]\(http://aaaaa"%2C"https//bbbbbb"\]的方式来配置。](http://aaaaa","https://bbbbbb"]的方式来配置。]%28http://aaaaa"%2C"https//bbbbbb"]的方式来配置。)\)
 
-\#\#Gzip的使用方式  
+#Gzip的使用方式  
+
 在源码引导RequestBodyCompression.java中我们可以看到gzip的使用身影。通过拦截器对Request 的body进行gzip的压缩，来减少流量的传输。  
 Gzip实现的方式主要是通过GzipSink对普通sink的封装压缩。在这个地方就不再贴相关代码的实现。有兴趣同学对照源码看一下就ok。
 
 强大的Interceptor设计应该也算是这个框架的一个亮点。
 
-\#\#安全性  
-连接安全性主要是在HttpEngine.connect\(\)方法。上一节油讲到地址相关的选择，在HttpEngine中有一个静态方法createAddress\(client, networkRequest\)，在这里通过获取到OkHttpClient中关于SSLSocketFactory、HostnameVerifier和CertificatePinner的配置信息。而这些信息大部分采用默认情况。这些信息都会在后面的重连中作为对比参考项。
+#安全性  
+
+连接安全性主要是在HttpEngine.connect\(\)方法。上一节讲到地址相关的选择，在HttpEngine中有一个静态方法createAddress\(client, networkRequest\)，在这里通过获取到OkHttpClient中关于SSLSocketFactory、HostnameVerifier和CertificatePinner的配置信息。而这些信息大部分采用默认情况。这些信息都会在后面的重连中作为对比参考项。
 
 同时在Connection.upgradeToTls\(\)方法中，有对SSLSocket、SSLSocketFactory的创建活动。这些创建都会被记录到ConnectionSpec中,当发起ConnectionSpec.apply\(\)会发起一些列的配置以及验证。
 
 建议有兴趣的同学先了解java的SSLSocket相关的开发再来了解本框架中的安全性，会更能理解一些。
 
-\#\#平台适应性  
+#平台适应性  
+
 讲了很多，终于来到了平台适应性了。Platform是整个平台适应的核心类。同时它封装了针对不同平台的三个平台类Android和JdkWithJettyBootPlatform。  
 代码实现在Platform.findPlatform中
 
@@ -610,7 +681,8 @@ private static Platform findPlatform() {
 这里采用了JAVA的反射原理调用到class的method。最后在各自的平台调用下发起invoke来执行相应方法。详情请参看继承了Platform的Android类。  
 当然要做这两种的平台适应，必须要知道当前平台在内存中相关的class地址以及相关方法。
 
-\#\#总结  
+#总结  
+
 1、从整体结构和类内部域中都可以看到OkHttpClient，有点类似与安卓的ApplicationContext。看起来更像一个单例的类，这样使用好处是统一。但是如果你不是高手，建议别这么用，原因很简单：逻辑牵连太深，如果出现问题要去追踪你会有深深地罪恶感的；  
 2、框架中的一些动态方法、静态方法、匿名内部类以及Internal的这些代码相当规整，每个不同类的不同功能能划分在不同的地方。很值得开发者学习的地方；  
 3、从平台的兼容性来讲，也是很不错的典范（如果你以后要从事API相关编码，那更得好好注意对兼容性的处理）；  
