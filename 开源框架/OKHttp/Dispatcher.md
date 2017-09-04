@@ -1,6 +1,7 @@
+# Dispatcher
 Dispatcher的作用是维护请求的状态，并维护一个线程池，用于执行请求。
 
-### 遗留的疑问
+# 遗留的疑问
 1. 线程池的缓存队列new SynchronousQueue<Runnable>()是怎么缓存的？
 2. Collections.unmodifiableList(result);的作用
 
