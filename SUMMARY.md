@@ -39,7 +39,7 @@
   * [AsyncTask详解](Android/Android中的线程模型/AsyncTask详解.md)
   * [线程池](Android/Android中的线程模型/线程池.md)
   * [HandlerThread](Android/Android中的线程模型/HandlerThread.md)
-* [APK的安全性](Android/APK的安全性.md)
+* [APK的安全性](Android/APK的安全性/APK的安全性.md)
 
 ## 开源框架
 
