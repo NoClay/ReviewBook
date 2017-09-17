@@ -40,6 +40,7 @@
   * [线程池](Android/Android中的线程模型/线程池.md)
   * [HandlerThread](Android/Android中的线程模型/HandlerThread.md)
 * [APK的安全性](Android/APK的安全性/如何攻击.md)
+  * [如何防御](Android/APK的安全性/如何防御.md)
 
 ## 开源框架
 
